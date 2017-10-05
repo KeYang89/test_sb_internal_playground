@@ -1,0 +1,23 @@
+{
+    "name": "sbsearch/search",
+	"module": "sbsearch/search",
+	"type": "sb_new_web-extension",
+    "version": "1.0.0",
+    "title": "Search",
+    "description": "Add a search, plain and simple.",
+    "authors": [
+        {
+			"name": "SB",
+            "email": "kyang1@sbec.com",
+            "homepage": "http://sbec.com/"
+        }
+    ],
+    "extra": {
+		"icon": "icon.svg",
+        "scripts": "scripts.php"
+    },
+    "archive": {
+        "exclude": ["node_modules", "!/app"]
+    }
+}
+

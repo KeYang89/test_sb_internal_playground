@@ -1,0 +1,6 @@
+storage/*
+config.php
+*.log
+*.mp4
+tmp/*
+app/installer

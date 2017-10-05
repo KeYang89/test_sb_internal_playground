@@ -1,0 +1,22 @@
+{
+  "name": "sb/formmaker",
+  "module": "sb/formmaker",
+  "type": "sb_new_web-extension",
+  "version": "1.0.0",
+  "title": "Formmaker",
+  "description": "Create forms in SBWebApplication site. Build forms and manage the submissions. ",
+  "authors": [
+    {
+      "name": "SB Dev",
+      "email": "info@sbec.com",
+      "homepage": "http://www.sbec.com"
+    }
+  ],
+  "extra": {
+    "icon": "icon.svg",
+    "scripts": "scripts.php"
+  },
+  "require": {
+    "google/recaptcha": "~1.1"
+  }
+}

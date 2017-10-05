@@ -1,0 +1,19 @@
+{
+  "name": "sb/userprofile",
+  "module": "sb/userprofile",
+  "type": "sb_new_web-extension",
+  "version": "1.0.0",
+  "title": "Userprofile",
+  "description": "Userprofile for SBWebApplication.",
+  "authors": [
+    {
+      "name": "SB Dev",
+      "email": "info@sbec.com",
+      "homepage": "http://www.sbec.com"
+    }
+  ],
+  "extra": {
+    "icon": "icon.svg",
+    "scripts": "scripts.php"
+  }
+}

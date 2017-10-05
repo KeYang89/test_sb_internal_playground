@@ -1,0 +1,50 @@
+{
+    "name": "sb_new_web/sb_new_web",
+    "type": "project",
+    "description": "The SBWebApplication CMS",
+    "keywords": ["cms", "sb_new_web"],
+    "homepage": "http://sbec.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SBWebApplication Team",
+            "email": "info@sbec.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "composer/composer": "dev-master#7a9eb02190d334513e99a479510f87eed18cf958",
+        "doctrine/annotations": "~1.2.3",
+        "doctrine/dbal": "~2.5.1",
+        "ircmaxell/random-lib": "~1.0.0",
+        "maximebf/debugbar": "~1.11.0",
+        "monolog/monolog": "~1.13",
+        "nikic/php-parser": "~2.0.0",
+        "psr/log": "~1.0.0",
+        "swiftmailer/swiftmailer": "~5.4.5",
+        "symfony/debug": "~3.0.0",
+        "symfony/finder": "~3.0.0",
+        "symfony/http-foundation": "~3.0.0",
+        "symfony/routing": "~3.0.0",
+        "symfony/stopwatch": "~3.0.0",
+        "symfony/templating": "~3.0.0",
+        "symfony/translation": "~3.0.0",
+        "twig/twig": "^1.22"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "SBWebApplication\\": "app/modules/application/src",
+            "SBWebApplication\\Installer\\": "app/installer/src",
+            "SBWebApplication\\System\\": "app/system/src",
+            "SBWebApplication\\Config\\": "app/modules/config/src",
+            "SBWebApplication\\Console\\": "app/console/src",
+            "SBWebApplication\\Migration\\": "app/modules/migration/src"
+        }
+    },
+    "config": {
+        "vendor-dir": "app/vendor"
+    }
+}

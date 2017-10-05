@@ -1,0 +1,27 @@
+{
+  "name": "sb/pk-framework",
+  "module": "sb/pk-framework",
+  "type": "sb_new_web-extension",
+  "version": "1.0.4",
+  "title": "SB Framework",
+  "description": "Framework for SB extensions.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "SB",
+      "email": "kyang1@sbec.com",
+      "homepage": "http://sbec.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "SB\\PkFramework\\": "src"
+    }
+  },
+  "require": {
+    "abeautifulsite/simpleimage": "2.5.*"
+  },
+  "extra": {
+    "icon": "icon.svg"
+  }
+}
