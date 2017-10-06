@@ -2,6 +2,9 @@
 <html lang="<?= str_replace('_', '-', $intl->getLocaleTag()) ?>">
     <head>
         <meta charset="utf-8">
+        <meta name="description" content="SB Web Application">
+        <meta name="keywords" content="S&B, Engineering, Construction, Website">
+        <meta name="author" content="SB Dev">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;subset=<?= $subset ?>" rel="stylesheet">

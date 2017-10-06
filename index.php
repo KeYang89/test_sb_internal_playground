@@ -26,7 +26,9 @@ $config = array(
     'path.vendor'   => $path.'/vendor',
     'path.artifact' => $path.'/tmp/packages',
     'config.file'   => realpath($path.'/config.php'),
-    'system.api'    => 'https://sbec_portal.com'
+    'system.api'    => '/storage/ke_sample_sys.json',
+    'system_news.api'    => '/storage/ke_sample_news.json',
+    'system_goods.api'    => '/storage/ke_sample_goods.json'
 );
 
 if (!$config['config.file']) {

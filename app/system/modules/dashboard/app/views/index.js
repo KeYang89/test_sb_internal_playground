@@ -161,7 +161,7 @@ window.Dashboard = {
 
         checkVersion: function () {
 
-            this.$http.get(this.api + '/api/update', {}, {cache: 60}).then(function (res) {
+            this.$http.get(this.api, {}, {cache: 60}).then(function (res) {
                 var update = res.data[this.channel == 'nightly' ? 'nightly' : 'latest'];
 
                 if (update) {

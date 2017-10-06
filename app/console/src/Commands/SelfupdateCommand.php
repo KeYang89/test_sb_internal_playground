@@ -85,7 +85,7 @@ class SelfupdateCommand extends Command
      */
     protected function getVersions()
     {
-        if (!($res = file_get_contents($this->container->get('system.api') . '/api/update'))) {
+        if (!($res = file_get_contents($this->container->get('system.api')))) {
             App::abort(500, 'Could not obtain latest Version.');
         }
 
