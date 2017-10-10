@@ -48,7 +48,7 @@ $config['project_image_class'] = in_array($config['project']['image_align'], ['r
 
 		<div class="uk-grid" data-uk-grid-margin="">
 			<div class="uk-width-medium-3-4">
-
+<div class='uk-icon-hover uk-icon-small uk-icon-arrows-alt' id='full_screen' style='float:right;'></div>
 	<?php endif; ?>
 
 	<?php if ($config['project']['metadata_position'] == 'content-top' && (!empty($project->date) || !empty($project->client))) : ?>

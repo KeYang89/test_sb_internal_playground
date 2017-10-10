@@ -26,7 +26,7 @@
             <label for="form-class" class="uk-form-label">{{ 'Class suffix' | trans }}</label>
 
             <div class="uk-form-controls">
-                <input id="form-class" class="uk-form-width-large" type="text" v-model="formitem.data.classSfx">
+                <input id="form-class" class="uk-form-width-large" type="text" v-model="formitem.data.classSfx" value="quiz-over-video">
             </div>
         </div>
 
