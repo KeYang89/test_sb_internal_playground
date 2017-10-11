@@ -10,7 +10,7 @@
         <div class="uk-form-controls uk-form-controls-text">
             <p v-for="option in field.options" class="uk-form-controls-condensed">
                 <label><input type="checkbox" value="{{ option.value }}"
-                              v-model="inputValue"> {{ option.text }}</label>
+                             > {{ option.text }}</label>
             </p>
 
             <p v-if="field.data.help_text && field.data.help_show == 'block'"

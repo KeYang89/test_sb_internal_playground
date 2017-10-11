@@ -55,9 +55,8 @@
         }
         if (vid != "None" && quiz_form!= "None"){ //with video
         vid.addEventListener("timeupdate", function(){
-        if(this.currentTime >= vid.duration) {
+        if(this.currentTime >= vid.duration/100) {
             this.pause();
-            quiz_form.css.zIndex=1;
             vid.style.opacity = 0.1;
             if (!executed){
                 executed=true;

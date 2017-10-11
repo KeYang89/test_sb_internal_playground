@@ -76,7 +76,7 @@ module.exports = {
             return this.field.data.requiredError || this.$trans('Please enter a value');
         },
         fieldLabel: function () {
-            return this.isAdmin ? this.$trans('Default value') : this.field.label;
+            return this.isAdmin ? this.$trans('Correct answer') : this.field.label;
         }
     },
 
