@@ -9,7 +9,7 @@ return [
 		'minLength' => 0,
 		'maxLength' => 0,
 		'rows' => 0,
-		'placeholder' => ''
+		'placeholder' => 'type your answer'
 	],
 	'formatValue' => function (\SB\PkFramework\Field\FieldBase $field, \SB\PkFramework\FieldValue\FieldValueBase $fieldValue) {
 		return array_map(function ($val) {

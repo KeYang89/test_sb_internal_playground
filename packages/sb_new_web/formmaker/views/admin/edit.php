@@ -44,6 +44,7 @@ $view->script('form-edit', 'sb/formmaker:app/bundle/form-edit.js', ['sb-fieldtyp
 				    <div class="uk-width-medium-1-4">
 						<h3>{{ 'Plugin code' | trans }}</h3>
 						<p>{{ 'Add this code to any SBWebApplication content to show the form.' | trans }}</p>
+						<p>For Quiz Question, please do not add more than four options for each answer. Each question needs to have a single correct answer.</p>
 						<kbd>
 							(formmaker){<br>
 							 &nbsp;&nbsp;&nbsp;&nbsp;"id":"{{ formitem.id }}"<br>

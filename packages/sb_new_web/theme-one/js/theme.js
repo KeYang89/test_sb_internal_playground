@@ -29,11 +29,36 @@
         var quiz_form=$("#formmaker-form") || "None";
         if (quiz_form!= "None"){//init hide the quiz
             quiz_form.hide();
+            var checkboxes =$('input'); //remove correct value until a button is clicked
+            for (var i=0; i<checkboxes.length; i++)  {
+              if (checkboxes[i].type == 'checkbox')   {
+                checkboxes[i].checked = false;
+                checkboxes[i].addEventListener("click",function(){this.disabled = true;},false);
+              }
+            }
         }
         var vid = $(".video_with_quiz")[0] || $("video")[0] || "None"; //currently default to all videos
         var executed = false;
         var full_screen_flag = false;
         var full_screen_button = $('#full_screen')[0] || "None";
+        function get_score(num) {
+            var q_count = num*1.0 || 0;
+            var wrong_answer_count = 0;
+            var score_message = "";
+            for (var i=0; i<checkboxes.length; i++)  {
+                if (checkboxes[i].type == 'checkbox' && checkboxes[i].checked && checkboxes[i].disabled != true) {
+                    wrong_answer_count=wrong_answer_count+1.0;
+                }
+            }
+            if (q_count > 0)
+            {
+                if (wrong_answer_count > q_count) {score_message = "Your score is too low. You can refresh the page to listen to the video again.";}
+                else {
+                    score_message = "Your score is"+parseInt((q_count-wrong_answer_count)/wrong_answer_count*100);
+                }
+            }
+            alert(score_message);
+        }
         function dynamic_id(item, index) {
             var index_id=index+1;
             $("<input class='timeline_input' name='timeline' type='radio' id='"+index_id+"'><label class='uk-form-label-process' for="+index_id+">Question"+index_id+"</label>").insertBefore(item);      
@@ -67,12 +92,17 @@
                 var last_row=quiz_row.last();
                 $("<div class='timeline_line'></div>").insertAfter(last_row);
                 var quiz_steps = $("input[type=radio]");
-                quiz_steps.eq(0).attr("checked", "checked");    
+                quiz_steps.eq(0).attr("checked", "checked"); 
+                // $('button .uk-button-primary:first').addEventListener("click", 
+                //     function() {get_score(quiz_steps.length)});
+                  
             }
         }
+
         })
            } //with video
         });
+
 
 })(jQuery);
 
