@@ -26,38 +26,60 @@
         })($('#tm-main'));
     });
     $(window).load(function(){
-        var quiz_form=$("#formmaker-form") || "None";
+        var quiz_form=$(".quiz-over-video").eq(0) || "None";
+        var sb_selected = [];
+        var answered = 0;
+        var quiz_steps = 4; //default amount
         if (quiz_form!= "None"){//init hide the quiz
             quiz_form.hide();
-            var checkboxes =$('input'); //remove correct value until a button is clicked
-            for (var i=0; i<checkboxes.length; i++)  {
+            var submit_button = $('.quiz-over-video .uk-button-primary')[0];
+            $("<div id='video_quiz_score'></div>").insertBefore($('video'));
+            submit_button.disabled = true;
+            $('.quiz-over-video .uk-form-controls').addClass("unanswered");
+            var checkboxes =$('.quiz-over-video input'); //remove correct value until a button is clicked
+            for (var i = 0; i<checkboxes.length; i++)  {
               if (checkboxes[i].type == 'checkbox')   {
+                if (checkboxes[i].checked){
+                    sb_selected.push($(checkboxes[i]).parent());
+                }
                 checkboxes[i].checked = false;
-                checkboxes[i].addEventListener("click",function(){this.disabled = true;},false);
-              }
+                //user makes a selection, disable the selection
+                checkboxes[i].addEventListener("click",function(){
+                    this.disabled = true;
+                    //'this' refers to a jQuery object, not an element
+                    var user_selected = $(this).parent();
+                    var current_question_set = user_selected.parent().parent();
+                    current_question_set.removeClass("unanswered");
+                    current_question_set.addClass("answered");
+                    answered = answered + 1;
+                    render_result(sb_selected,user_selected);
+                    if (answered>=quiz_steps){
+                        submit_button.disabled = false;
+                        submit_button.addEventListener("click",get_score);
+                    }
+                },false);
+
+                }
             }
         }
         var vid = $(".video_with_quiz")[0] || $("video")[0] || "None"; //currently default to all videos
         var executed = false;
         var full_screen_flag = false;
         var full_screen_button = $('#full_screen')[0] || "None";
-        function get_score(num) {
-            var q_count = num*1.0 || 0;
-            var wrong_answer_count = 0;
-            var score_message = "";
-            for (var i=0; i<checkboxes.length; i++)  {
-                if (checkboxes[i].type == 'checkbox' && checkboxes[i].checked && checkboxes[i].disabled != true) {
-                    wrong_answer_count=wrong_answer_count+1.0;
-                }
-            }
-            if (q_count > 0)
-            {
-                if (wrong_answer_count > q_count) {score_message = "Your score is too low. You can refresh the page to listen to the video again.";}
-                else {
-                    score_message = "Your score is"+parseInt((q_count-wrong_answer_count)/wrong_answer_count*100);
-                }
-            }
-            alert(score_message);
+        function render_result(sb_selected,user_selected){
+            user_selected.get(0).style.color = "red";
+            user_selected.addClass("user_selected");
+            sb_selected.map(function(x) {
+            if (x.parent().parent().hasClass("answered")){
+                x.addClass("sb_selected");
+                x[0].style.color = "green";
+             }
+           })
+           $('.answered input').each(function(){this.disabled = true})
+        }
+        function get_score() {
+           var score = $('.user_selected.sb_selected').length;
+           $("#video_quiz_score").html("<strong>Your score is: </strong>"+score);
         }
         function dynamic_id(item, index) {
             var index_id=index+1;
@@ -93,14 +115,12 @@
                 $("<div class='timeline_line'></div>").insertAfter(last_row);
                 var quiz_steps = $("input[type=radio]");
                 quiz_steps.eq(0).attr("checked", "checked"); 
-                // $('button .uk-button-primary:first').addEventListener("click", 
-                //     function() {get_score(quiz_steps.length)});
-                  
+                quiz_num = quiz_steps.length;          
             }
         }
 
         })
-           } //with video
+        } //with video
         });
 
 
