@@ -26,13 +26,13 @@
         })($('#tm-main'));
     });
     $(window).load(function(){
-        var quiz_form=$(".quiz-over-video").eq(0) || "None";
+        var quiz_form=$(".quiz-over-video").eq(0) || null;
+        var submit_button = $('.quiz-over-video .uk-button-primary')[0] || null;
         var sb_selected = [];
         var answered = 0;
         var quiz_steps = 4; //default amount
-        if (quiz_form!= "None"){//init hide the quiz
+        if (quiz_form && submit_button){//init hide the quiz
             quiz_form.hide();
-            var submit_button = $('.quiz-over-video .uk-button-primary')[0];
             $("<div id='video_quiz_score'></div>").insertBefore($('video'));
             submit_button.disabled = true;
             $('.quiz-over-video .uk-form-controls').addClass("unanswered");
@@ -43,6 +43,8 @@
                     sb_selected.push($(checkboxes[i]).parent());
                 }
                 checkboxes[i].checked = false;
+                //for IE
+                $("<span class='ie-span'></span>").insertAfter(checkboxes[i]);
                 //user makes a selection, disable the selection
                 checkboxes[i].addEventListener("click",function(){
                     this.disabled = true;
@@ -53,6 +55,7 @@
                     current_question_set.addClass("answered");
                     answered = answered + 1;
                     render_result(sb_selected,user_selected);
+                    render_result_ie_only();
                     if (answered>=quiz_steps){
                         submit_button.disabled = false;
                         submit_button.addEventListener("click",get_score);
@@ -62,10 +65,10 @@
                 }
             }
         }
-        var vid = $(".video_with_quiz")[0] || $("video")[0] || "None"; //currently default to all videos
+        var vid = $(".video_with_quiz")[0] || $("video")[0] || null; //currently default to all videos
         var executed = false;
         var full_screen_flag = false;
-        var full_screen_button = $('#full_screen')[0] || "None";
+        var full_screen_button = $('#full_screen')[0] || null;
         function render_result(sb_selected,user_selected){
             user_selected.get(0).style.color = "red";
             user_selected.addClass("user_selected");
@@ -76,6 +79,11 @@
              }
            })
            $('.answered input').each(function(){this.disabled = true})
+        }
+        function render_result_ie_only(){
+            $('.sb_selected .ie-span').html("&#8592; Correct Answer");
+            $('.user_selected .ie-span').html("&#8592; Incorrect");
+            $('.user_selected.sb_selected .ie-span').html("Great job!");
         }
         function get_score() {
            var score = $('.user_selected.sb_selected').length;
@@ -97,10 +105,10 @@
             }
             full_screen_flag=!full_screen_flag;
          }
-        if (full_screen_button != "None") {
+        if (full_screen_button) {
         full_screen_button.addEventListener("click", zoom_vid);
         }
-        if (vid != "None" && quiz_form!= "None"){ //with video
+        if (vid && quiz_form){ //with video
         vid.addEventListener("timeupdate", function(){
         if(this.currentTime >= vid.duration/100) {
             this.pause();

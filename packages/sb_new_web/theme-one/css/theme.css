@@ -222,3 +222,15 @@
     height: 40px;
     text-align: center;
 }
+.ie-span {
+	display: none;
+}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+/* IE10+ CSS styles go here */
+.ie-span {
+	display:block;
+	position: absolute;
+	right:5px;
+	margin-top:-30px;
+}
+}
