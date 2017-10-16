@@ -18,7 +18,7 @@ App::db()->insert('@system_widget', ['title' => 'Powered by SBWebApplication', '
 
 App::db()->insert('@system_page', [
     'title' => 'Home',
-    'content' => "<div class=\"uk-width-medium-3-4 uk-container-center\">\n    \n<h3 class=\"uk-h1 uk-margin-large-bottom\">Uniting fresh design and clean code<br class=\"uk-hidden-small\"> to create beautiful websites.</h3>\n\n<p class=\"uk-width-medium-4-6 uk-container-center\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>\n\n</div>",
+    'content' => "<div class=\"uk-width-medium-1-1 uk-container-center\">\n    \n<h3 class=\"uk-h1 uk-margin-large-bottom\">Build it right<br class=\"uk-hidden-small\"> in the first time</h3>\n\n<p class=\"uk-width-medium-1-1 uk-container-center\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>\n\n</div>",
     'data' => '{"title":true}'
 ]);
 

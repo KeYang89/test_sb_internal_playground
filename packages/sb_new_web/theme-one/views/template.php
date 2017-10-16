@@ -73,15 +73,17 @@
             <div class="uk-container uk-container-center">
 
                 <div class="uk-grid" data-uk-grid-match data-uk-grid-margin>
-
-                    <main class="<?= $view->position()->exists('sidebar') ? 'uk-width-medium-3-4' : 'uk-width-1-1'; ?>">
+                  <?php if ($view->position()->exists('sidebar')) :?>
+                      <main class="uk-width-medium-3-4">
                         <?= $view->render('content') ?>
-                    </main>
-
-                    <?php if ($view->position()->exists('sidebar')) : ?>
+                      </main>
                     <aside class="uk-width-medium-1-4 <?= $params['sidebar_first'] ? 'uk-flex-order-first-medium' : ''; ?>">
                         <?= $view->position('sidebar', 'position-panel.php') ?>
                     </aside>
+                  <?php else: ?>
+                     <main class="uk-width-1-1">
+                        <?= $view->render('content') ?>
+                    </main>
                     <?php endif ?>
 
                 </div>

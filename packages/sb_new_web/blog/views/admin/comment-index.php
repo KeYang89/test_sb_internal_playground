@@ -158,7 +158,7 @@
                     </div>
                 </div>
 
-                <div class="uk-grid uk-grid-medium uk-grid-width-1-1">
+                <div class="uk-grid uk-grid-medium uk-grid-width-small-1-1">
                     <div>
                         <textarea class="uk-width-1-1" name="content" rows="10" v-model="editComment.content" v-validate:required></textarea>
 
