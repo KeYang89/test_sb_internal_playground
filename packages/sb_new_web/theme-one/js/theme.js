@@ -82,7 +82,7 @@
            $('.answered input').each(function(){this.disabled = true})
         }
         function render_result_ie_only(){
-            $('.sb_selected .ie-span').html("&#8592; Correct Answer");
+            $('.sb_selected .ie-span').html("&#8592; Correct");
             $('.user_selected .ie-span').html("&#8592; Incorrect");
             $('.user_selected.sb_selected .ie-span').html("Great job!");
         }

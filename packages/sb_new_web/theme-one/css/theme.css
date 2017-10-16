@@ -7974,7 +7974,9 @@ html {
     .ie-span {
         display:block;
         position: absolute;
-        right:5px;
-        margin-top:-30px;
+        width: 100%;
+        margin-top:-28px;
+        text-align: right;
+        background:rgba(0, 128, 0, 0.10);
     }
 }
