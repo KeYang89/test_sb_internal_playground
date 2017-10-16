@@ -10,7 +10,6 @@
     </head>
     <!--[if IE ]><body class="ie"><![endif]-->
     <!--[if !IE]>--><body><!--<![endif]-->
-
         <?php if ($params['logo'] || $view->menu()->exists('main') || $view->position()->exists('navbar')) : ?>
         <div class="<?= $params['classes.navbar'] ?>" <?= $params['classes.sticky'] ?>>
             <div class="uk-container uk-container-center">
@@ -71,7 +70,12 @@
 
         <div id="tm-main" class="tm-main uk-block <?= $params['main_style'] ?>">
             <div class="uk-container uk-container-center">
-
+            <div id="loading-bro">
+              <h1>Loading</h1>
+              <svg id="load" x="0px" y="0px" viewBox="0 0 150 150">
+                <circle id="loading-inner" cx="75" cy="75" r="60"/>
+             </svg>
+            </div>
                 <div class="uk-grid" data-uk-grid-match data-uk-grid-margin>
                   <?php if ($view->position()->exists('sidebar')) :?>
                       <main class="uk-width-medium-3-4">

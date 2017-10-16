@@ -26,6 +26,7 @@
         })($('#tm-main'));
     });
     $(window).load(function(){
+        $('#loading-bro').fadeOut();
         var quiz_form=$(".quiz-over-video").eq(0) || null;
         var submit_button = $('.quiz-over-video .uk-button-primary')[0] || null;
         var sb_selected = [];
