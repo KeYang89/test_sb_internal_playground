@@ -5,6 +5,7 @@
 html {
     font: normal 16px / 26px "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     -webkit-text-size-adjust: 100%;
+    height:100%;
     -ms-text-size-adjust: 100%;
     background: #fff;
     color: #888888;
@@ -12,7 +13,14 @@ html {
     -moz-osx-font-smoothing: grayscale
 }
 body {
-    margin: 0
+    margin: 0;
+    height:100%;
+}
+div#tm-main {
+    min-height: 70%;
+    min-height: -webkit-calc(100% - 122px - 196.2px);
+    min-height: -moz-calc(100% - 122px - 196.2px);
+    min-height: calc(100% - 122px - 196.2px);
 }
 a {
     background: transparent
@@ -7400,7 +7408,8 @@ a.uk-thumbnail:focus {
     display: inline-block;
     position: relative;
     margin: 0;
-    z-index: 1
+    z-index: 1;
+    width: 100%;
 }
 .uk-search:before {
     content: "";
