@@ -1,0 +1,11 @@
+{
+  "name": "sb_new_web-tinyMCE",
+  "scripts": {
+    "install": "bower install; webpack;",
+    "archive": "webpack -p && composer archive --format=zip"
+  },
+  "devDependencies": {
+    "webpack": "^1.12.9",
+    "bower": "^1.7.6"
+  }
+}

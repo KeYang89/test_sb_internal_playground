@@ -1,0 +1,7 @@
+{
+  "name": "sb_new_web tinyMCE",
+  "dependencies": {
+    "tinymce": "~4.3.3"
+  },
+  "private": true
+}
