@@ -12,9 +12,9 @@
 <body >
 <script src="js/pdf.js"></script>
 
-
 <canvas id="draw"></canvas>
-<canvas id="the-grid" class="grid"></canvas>
+<canvas id="canvasBg" width="800"></canvas>
+<canvas id="theGrid" class="grid"></canvas>
  <div class="imgNav drag" draggable="true" ondragstart="dragStart(event)" id="imgNav">
     <div class="imgNavTitle"><span class="cross" id="imgNavCross">&#x2715;</span></div>
     <img id="canvasImg" draggable="false" />
@@ -52,10 +52,19 @@
     <label for="sprayRadius">Radius</label>
     <input type="range" class="sprayRadius" value="20" min="20" max="80" step="1" id="sprayRadius">
   </div>
+
+  <div class="textPanel hide" id="textPanel">
+    <div class="toolTitle textPanelTitle"><span class="cross" id="textPanelCross">&#x2715;</span></div>
+    <label for="theText">Text</label>
+   <textarea id="theText" class="auto-text-area" type="text"></textarea>
+   <button id="submitText">Add</button>
+  </div>
+
   <div class="toolbar drag" id="drag-tool" draggable="true" ondragstart="dragStart(event)">
     <div class="toolTitle">&#x2715;</div>
     <div class="tool brush" data-tool-tip="Brush Size &amp; Opacity"></div>
     <div class="tool rainbow" data-tool-tip="Rainbow Brush Tool"></div>
+    <div class="tool text" data-tool-tip="Add Text"></div>
     <div class="tool spray" data-tool-tip="Spray Can Tool"></div>
     <div class="tool bg" data-tool-tip="Change Background Colour"></div>
     <div class="tool eraser" id="eraserTool" data-tool-tip="Eraser Tool"></div>
@@ -70,8 +79,10 @@
   </div>
 
     <script src='js/jquery.min.js'></script>
-    <script  src="js/index.js"></script>
+    
     <script  src="js/app.js"></script>
+    <script  src="js/index.js"></script>
+    <script  src="js/text.js"></script>
 </body>
 </html>
 

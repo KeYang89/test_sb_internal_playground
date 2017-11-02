@@ -1,7 +1,20 @@
 canvas#draw {
-  min-width: 800px;
-  height: auto;
   position: absolute;
+}
+#submitText {
+    color: #333;
+    margin: 5px;
+    width: 60px;
+    background: #dcdcdc;
+    border: none;
+    padding: 5px;
+}
+#theText {
+  border:none;
+  outline:none;
+  resize:none;
+  word-wrap: break-word;
+  height: 30px;
 }
 #thumbnail-pdf {
   width:auto;
@@ -202,7 +215,7 @@ body {
   font-family: Helvetica;
 }
 
-.brushPanel, .imgNav, .sprayPanel {
+.brushPanel, .imgNav, .sprayPanel, .textPanel {
   height: 180px;
   width: 266.6px;
   display: -ms-flexbox;
@@ -228,7 +241,7 @@ body {
   z-index: 999;
 }
 
-.brushPanel, .sprayPanel {
+.brushPanel, .sprayPanel, .textPanel {
   left: 15px;
   right: auto;
   height: 100px;
@@ -267,7 +280,19 @@ body {
   cursor: crosshair !important;
   z-index: 200;
 }
-
+/*#drawText{
+  cursor: move !important;
+  z-index: 201;
+  display: none;
+}*/
+#canvasBg {
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translatex(-50%) translatey(-50%);
+          transform: translatex(-50%) translatey(-50%);
+  position: absolute;
+  z-index: -1;
+}
 .toolbar {
   position: absolute;
   left: 200px;
@@ -311,18 +336,25 @@ body {
   padding-left: 5px;
   font-size: 10px;
 }
-
-.toolTitle {
-/*  -webkit-transform: translateX(-1px);
+/*.toolTitle {
+  -webkit-transform: translateX(-1px);
           transform: translateX(-1px);
-  width: 52px;*/
+  width: 52px;
 }
-
-.imgNavTitle, .panelTitle, .sprayPaneTitle {
+*/
+.imgNavTitle, .panelTitle, .sprayPaneTitle,.textPanelTitle {
   -webkit-transform: translateY(-15px);
           transform: translateY(-15px);
-}
 
+}
+.textPanel {
+	height: auto !important;
+}
+.textPanelTitle {
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  width:100%;
+}
 .panelTitle, .sprayPaneTitle {
   -webkit-transform: translateY(-8px);
           transform: translateY(-8px);
@@ -410,7 +442,7 @@ body {
   transition: transform 0s linear 1.5s, width 1.5s linear 0s, opacity .5s linear 1.5s, -webkit-transform 0s linear 1.5s;
 }
 
-#download, .bg, .brush, .clear, .eraser, .nav, .rainbow, .save, .spray {
+#download, .bg, .brush, .text, .clear, .eraser, .nav, .rainbow, .save, .spray {
   background-image: url(../svg/paintBrush.svg);
   background-position: 50%;
   background-repeat: no-repeat;
@@ -423,11 +455,12 @@ body {
 .bg {
   background-image: url(../svg/paintBucket.svg);
 }
-
+.text {
+  background-image: url(../svg/text.svg);
+}
 .clear {
   background-image: url(../svg/clear.svg);
 }
-
 .save {
   background-image: url(../svg/save.svg);
 }

@@ -6,8 +6,17 @@ function loadCanvas() {
     ctx.drawImage(a, 0, 0);
   }), (document.getElementById("canvasImg").src = e || error);
 }
-
+function loadCanvasBg() {
+  var e = localStorage.getItem("canvasBg"),
+    a = new Image();
+  (a.src = e), (a.onload = function() {
+    ctxBg.drawImage(a, 0, 0);
+  }), (document.getElementById("canvasBgImg").src = e || error);
+}
 function draw(e) {
+  if (canText) {
+    return addText();
+  }
   if (!isDrawing) return changeBrushSize(), void changeBrushOpacity();
   if (canSpray)
     for (var a = density; a--; ) {
@@ -21,7 +30,6 @@ function draw(e) {
     lastY
   ), ctx.lineTo(e.offsetX, e.offsetY), ctx.stroke();
   var r = [e.offsetX, e.offsetY];
-  console.log(r);
   if (
     (
       (lastX = r[0]),
@@ -48,8 +56,11 @@ function draw(e) {
       brushOpacity.value +
       ")";
   }
-  var c = canvas.toDataURL("image/png");
-  (document.getElementById("canvasImg").src = c);
+var c = canvas.toDataURL("image/png"),
+    l = canvasBg.toDataURL("image/png");
+  (document.getElementById("canvasImg").src = c), (document.getElementById(
+    "canvasBgImg"
+  ).src = l);
 }
 function activeTool(e, a) {
   a ? e.classList.add("active") : e.classList.remove("active");
@@ -60,6 +71,7 @@ function erase() {
         (canSpray = !1),
         activeTool(sprayTool, canSpray),
         sprayPanel.classList.add("hide"),
+        textPanel.classList.add("hide"),
         brushPanel.classList.remove("hide"),
         (ctx.globalCompositeOperation = "destination-out")
       )
@@ -79,6 +91,7 @@ function showBrush() {
         (canSpray = !1),
         activeTool(sprayTool, canSpray),
         sprayPanel.classList.add("hide"),
+        textPanel.classList.add("hide"),
         brushPanel.classList.remove("hide")
       )
     : brushPanel.classList.add("hide");
@@ -139,11 +152,21 @@ function bgToolOn() {
     }, 250);
   }
 }
+function textOn() {
+ (canText = !canText), activeTool(textTool, canText), canText
+    ? (
+        brushPanel.classList.add("hide"),
+        textPanel.classList.remove("hide"),
+        sprayPanel.classList.add("hide")
+   )
+    : textPanel.classList.add("hide");
+}
 function sprayOn() {
   (canSpray = !canSpray), activeTool(sprayTool, canSpray), canSpray
     ? (
         (showBrushPanel = !1),
         brushPanel.classList.add("hide"),
+        textPanel.classList.add("hide"),
         activeTool(brushTool, showBrushPanel),
         sprayPanel.classList.remove("hide")
       )
@@ -240,6 +263,7 @@ function dragOver(e) {
 var canvas = document.querySelector("#draw"),
   canvasBg = document.querySelector("#canvasBg"),
   ctx = canvas.getContext("2d"),
+  ctxBg = canvasBg.getContext("2d"),
   colorPicker = document.querySelector(".colorSelector"),
   brushSize = document.querySelector(".brushSize"),
   brushSizePreview = document.querySelector(".brushSizePreview"),
@@ -258,10 +282,14 @@ var canvas = document.querySelector("#draw"),
   sprayDensity = document.querySelector(".sprayDensity"),
   sprayRadius = document.querySelector(".sprayRadius"),
   sprayPanel = document.querySelector(".sprayPanel"),
+  textTool = document.querySelector(".text"),
+  textPanel = document.querySelector(".textPanel"),
+  textCross = document.querySelector("#textPanelCross"),
   dlToolLink = document.querySelector("#download"),
-  error = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/390561/error.png";
+  error = "watermark/error.png";
+  loadCanvasBg(),
   loadCanvas(), 
-  //(canvas.width = 800), (canvas.height = 450), 
+  (canvas.width = 800),
   (ctx.strokeStyle =
   "#BADA55"), (ctx.lineJoin = "round"), (ctx.lineCap =
   "round"), (ctx.lineWidth = brushSize.value);
@@ -273,6 +301,7 @@ var isBgTool = !1,
   changeHue = !1,
   density = sprayDensity.value,
   radius = sprayRadius.value;
+
 canvas.addEventListener("mousedown", function(e) {
   isDrawing = !0;
   var a = [e.offsetX, e.offsetY];
@@ -321,8 +350,15 @@ colorPicker.addEventListener(
 ), bgTool.addEventListener("click", bgToolOn), sprayTool.addEventListener(
   "click",
   sprayOn
+), textTool.addEventListener(
+  "click",
+  textOn
+), textCross.addEventListener(
+  "click",
+  textOn
 ), sprayCross.addEventListener("click", sprayOn);
 var canSpray = !1;
+var canText = !1;
 sprayRadius.addEventListener(
   "mousemove",
   changeSpray

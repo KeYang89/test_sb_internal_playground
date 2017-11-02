@@ -1,7 +1,9 @@
+  "use strict";
+  $(function(){
   // If absolute URL from the remote server is provided, configure the CORS
   // header on that server.
-  var url = 'pdfs/original/test-mult.pdf';
- // var url = 'pdfs/original/test-single.pdf';
+ // var url = 'pdfs/original/test-mult.pdf';
+  var url = 'pdfs/original/test-single.pdf';
 
   // The workerSrc property shall be specified.
   PDFJS.workerSrc = 'js/pdf.worker.js';
@@ -10,9 +12,9 @@
       pageNum = 1,
       pageRendering = false,
       pageNumPending = null,
-      scale = 1,
+      scale = 1.0,
       canvas = $('#draw')[0],
-      _canvas = $('#the-grid'),
+      grid_canvas = $('#theGrid'),
       ctx = canvas.getContext('2d');
 
   /**
@@ -27,10 +29,11 @@
       pageRendering = true;
       // Using promise to fetch the page
       pdfDoc.getPage(num).then(function (page) {
-          var viewport = page.getViewport(scale);
+          canvas.width = 800;
+          var correctScale=canvas.width / page.getViewport(scale).width;
+          var viewport = page.getViewport(correctScale);
           canvas.height = viewport.height;
-          canvas.width = viewport.width;
-
+        
           // Render PDF page into canvas context
           var renderContext = {
               canvasContext: ctx,
@@ -145,10 +148,12 @@
 
 $('#gridOn').on('click', function(e) {
     if ($(this).prop('checked')) {
-      _canvas.addClass('grid');
+      grid_canvas.addClass('grid');
     }
     else {
-      _canvas.removeClass('grid');
+      grid_canvas.removeClass('grid');
     }
   });
+
+});
   
