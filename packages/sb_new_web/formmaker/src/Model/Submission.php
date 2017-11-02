@@ -57,7 +57,7 @@ class Submission implements \JsonSerializable {
 		return [
 			self::STATUS_ACTIVE => __('Active'),
 			self::STATUS_DONE => __('Done'),
-			self::STATUS_ARCHIVED => __('Archived')
+			self::STATUS_ARCHIVED => __('Reject') //Archived
 		];
 	}
 

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>PDF Web Editor By Ke Yang</title>
+  <link rel="stylesheet" href="css/pdf_viewer.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body >
+<script src="js/pdf.js"></script>
+
+
+<canvas id="draw"></canvas>
+<canvas id="the-grid" class="grid"></canvas>
+ <div class="imgNav drag" draggable="true" ondragstart="dragStart(event)" id="imgNav">
+    <div class="imgNavTitle"><span class="cross" id="imgNavCross">&#x2715;</span></div>
+    <img id="canvasImg" draggable="false" />
+    <img id="canvasBgImg" draggable="false" />
+    <div id="toolkit">
+      <div id="thumbnail-pdf"></div>
+      <div id="button-set">
+        <button id="prev"><</button>
+        <button id="next">></button>
+        &nbsp; &nbsp;
+        <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
+        <label id="grid-check">Grid: <input type="checkbox" id="gridOn" checked></label>
+      </div>
+  </div>
+  </div>
+
+  <div class="brushPanel hide" id="brushPanel">
+    <div class="toolTitle panelTitle"><span class="cross" id="panelCross">&#x2715;</span></div>
+    <label for="brushSize" class="sizeLabel"> Size</label>
+    <div class="brushSizePreviewCont">
+      <label for="brushSize" class="brushSizePreview"></label>
+    </div>
+    <input type="range" class="brushSize" id="brushSize" value="10" min="1" max="80">
+
+    <label for="brushOpacity">Opacity</label>
+    <input type="range" class="brushOpacity" value="1" min="0.1" max="1" step=".1" id="brushOpacity">
+  </div>
+
+  <div class="sprayPanel hide" id="sprayPanel">
+    <div class="toolTitle sprayPaneTitle"><span class="cross" id="sprayPanelCross">&#x2715;</span></div>
+    <label for="sprayDensity" class="sizeLabel"> Density</label>
+
+    <input type="range" class="sprayDensity" id="sprayDensity" value="50" min="5" max="300">
+
+    <label for="sprayRadius">Radius</label>
+    <input type="range" class="sprayRadius" value="20" min="20" max="80" step="1" id="sprayRadius">
+  </div>
+  <div class="toolbar drag" id="drag-tool" draggable="true" ondragstart="dragStart(event)">
+    <div class="toolTitle">&#x2715;</div>
+    <div class="tool brush" data-tool-tip="Brush Size &amp; Opacity"></div>
+    <div class="tool rainbow" data-tool-tip="Rainbow Brush Tool"></div>
+    <div class="tool spray" data-tool-tip="Spray Can Tool"></div>
+    <div class="tool bg" data-tool-tip="Change Background Colour"></div>
+    <div class="tool eraser" id="eraserTool" data-tool-tip="Eraser Tool"></div>
+    <div class="tool nav active" data-tool-tip="Navigator Hide/Show"></div>
+    <div class="tool save" data-tool-tip="Save Canvas"></div>
+    <div class="tool clear" data-tool-tip="Clear Canvas"></div>
+    <div class="tool dl" data-tool-tip="Download As PNG">
+      <a id="download"></a>
+    </div>
+    <input type="color" class="tool colorSelector" value="#e53935" data-tool-tip="Select Colour">
+
+  </div>
+
+    <script src='js/jquery.min.js'></script>
+    <script  src="js/index.js"></script>
+    <script  src="js/app.js"></script>
+</body>
+</html>
+
+
+
+
+
+ 
+
