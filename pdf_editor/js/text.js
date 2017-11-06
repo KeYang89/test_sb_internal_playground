@@ -1,15 +1,18 @@
 "use strict";
 // text_canvas related variables
-var text_canvas = $("#draw");
+var source_canvas = $("#draw");
+var _source_canvas = source_canvas[0];
+var text_canvas = $("#drawText");
+var _text_canvas = text_canvas[0];
 function addText() {
     text_canvas.show();
+
 }
-    var _text_canvas = text_canvas[0];
+function hideTextCanvas() {
+    text_canvas.hide();
+}
+$(document).ready(function() {
     var text_ctx = _text_canvas.getContext("2d");
-    // variables used to get mouse position on the text_canvas
-    var text_canvasOffset = text_canvas.offset();
-    var text_offsetX = text_canvasOffset.left;
-    var text_offsetY = text_canvasOffset.top;
     var text_scrollX = text_canvas.scrollLeft();
     var text_scrollY = text_canvas.scrollTop();
 
@@ -26,9 +29,10 @@ function addText() {
     var selectedText = -1;
     // clear the text_canvas & redraw all texts
     function drawText(c) {
-        //text_ctx.clearRect(0, 0, _text_canvas.width, _text_canvas.height);
+        c.clearRect(0, 0, _text_canvas.width, _text_canvas.height);
         for (var i = 0; i < texts.length; i++) {
             var text = texts[i];
+            c.fillStyle =  colorPicker.value;
             c.fillText(text.text, text.x, text.y);
         }
     }
@@ -44,12 +48,16 @@ function addText() {
     // mousedown'ed on one of them
     // If yes, set the selectedText to the index of that text
     function handleMouseDown(e) {
+
         e.preventDefault();
-        text_startX = parseInt(e.clientX - text_offsetX);
-        text_startY = parseInt(e.clientY - text_offsetY);
+        text_startX = parseInt(e.clientX - text_canvas.offset().left);
+        text_startY = parseInt(e.clientY - text_canvas.offset().top);
+        console.log(text_startY);
         // Put your mousedown stuff here
         for (var i = 0; i < texts.length; i++) {
             if (textHittest(text_startX, text_startY, i)) {
+               console.log("text-e");
+        
                 selectedText = i;
             }
         }
@@ -76,8 +84,8 @@ function addText() {
             return;
         }
         e.preventDefault();
-        var mouseX = parseInt(e.clientX - text_offsetX);
-        var mouseY = parseInt(e.clientY - text_offsetY);
+        var mouseX = parseInt(e.clientX - text_canvas.offset().left);
+        var mouseY = parseInt(e.clientY - text_canvas.offset().top);
 
         // Put your mousemove stuff here
         var dx = mouseX - text_startX;
@@ -106,7 +114,7 @@ function addText() {
     });
 
     $("#submitText").click(function () {
-
+        console.log("text_submit");
         // calc the y coordinate for this text on the text_canvas
         var y = texts.length * 20 + 20;
 
@@ -133,3 +141,4 @@ function addText() {
             $(this).height(this.scrollHeight);
         });
 
+});

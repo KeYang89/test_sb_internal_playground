@@ -13,10 +13,16 @@ function loadCanvasBg() {
     ctxBg.drawImage(a, 0, 0);
   }), (document.getElementById("canvasBgImg").src = e || error);
 }
+function textCanvasLayerState(){
+    if (canText) {
+      return addText();
+    }
+    else {
+      return hideTextCanvas();
+    }
+}
 function draw(e) {
-  if (canText) {
-    return addText();
-  }
+  textCanvasLayerState();
   if (!isDrawing) return changeBrushSize(), void changeBrushOpacity();
   if (canSpray)
     for (var a = density; a--; ) {
@@ -66,6 +72,7 @@ function activeTool(e, a) {
   a ? e.classList.add("active") : e.classList.remove("active");
 }
 function erase() {
+  textCanvasLayerState();
   (canErase = !canErase), activeTool(eraser, canErase), canErase
     ? (
         (canSpray = !1),
@@ -78,11 +85,13 @@ function erase() {
     : (ctx.globalCompositeOperation = "source-over");
 }
 function rain() {
+  textCanvasLayerState();
   (canRain = !canRain), activeTool(rainbow, canRain), canRain
     ? ((canSpray = !1), activeTool(sprayTool, canSpray), (changeHue = !0))
     : (changeHue = !1);
 }
 function showBrush() {
+  textCanvasLayerState();
   (showBrushPanel = !showBrushPanel), activeTool(
     brushTool,
     showBrushPanel
@@ -105,9 +114,11 @@ function showNav() {
     : navPanel.classList.add("hide");
 }
 function selectColor() {
+  textCanvasLayerState();
   (canRain = !1), activeTool(rainbow, canRain), (changeHue = !1);
 }
 function changeBrushSize() {
+ textCanvasLayerState();
   (brushSizePreview.style.width =
     brushSize.value + "px"), (brushSizePreview.style.height =
     brushSize.value + "px");
@@ -125,6 +136,7 @@ function changeBrushSize() {
     ")"), (brushSizePreview.style.background = ctx.strokeStyle);
 }
 function changeBrushOpacity() {
+  textCanvasLayerState();
   var e = colorPicker.value.replace("#", ""),
     a = rgbToHsl(e);
   (ctx.strokeStyle =
@@ -139,6 +151,7 @@ function changeBrushOpacity() {
     ")"), changeBrushSize();
 }
 function bgToolOn() {
+  textCanvasLayerState();
   if ((isBgTool = !isBgTool)) {
     bgTool.classList.add("active"), ctxBg.rect(
       0,
@@ -160,8 +173,10 @@ function textOn() {
         sprayPanel.classList.add("hide")
    )
     : textPanel.classList.add("hide");
+    textCanvasLayerState();
 }
 function sprayOn() {
+  textCanvasLayerState();
   (canSpray = !canSpray), activeTool(sprayTool, canSpray), canSpray
     ? (
         (showBrushPanel = !1),
@@ -173,6 +188,7 @@ function sprayOn() {
     : sprayPanel.classList.add("hide");
 }
 function changeSpray() {
+  textCanvasLayerState();
   (radius = sprayRadius.value), (density = sprayDensity.value);
 }
 function clearCanvas() {
@@ -241,6 +257,7 @@ function getRandomInt(e, a) {
   return Math.floor(Math.random() * (a - e + 1)) + e;
 }
 function dragStart(e) {
+  console.log(e);
   var a = window.getComputedStyle(e.target, null),
     t =
       parseInt(a.getPropertyValue("left")) -

@@ -1,4 +1,4 @@
-canvas#draw {
+canvas#draw, canvas#drawText {
   position: absolute;
 }
 #submitText {
@@ -250,7 +250,7 @@ body {
   border-top-left-radius: 0;
 }
 
-#canvasImg,#canvasBgImg {
+#canvasImg {
   max-width: 250px;
   max-height: 150px;
   height: auto;
@@ -264,27 +264,26 @@ body {
 }
 
 #canvasBgImg {
-  background: #fff;
-  background-size: 15px;
-  background: url(../watermark/logo.png) 50%;
-  opacity: 0.2;
-  background-position: -1.5px top;
-  position: absolute;
-  top: 33.2px;
-  top: calc(50% + 10px);
-  left: 50%;
-  -webkit-transform: translatex(-50%) translatey(-50%);
-          transform: translatex(-50%) translatey(-50%);
+    background: #fff;
+    background: url(../watermark/logo.png) 50%;
+    opacity: 0.1;
+    width: 100%;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    z-index: -1;
+    -webkit-transform: translatex(-50%) translatey(-50%);
+    transform: translatex(-50%) translatey(-50%);
 }
 #draw {
   cursor: crosshair !important;
   z-index: 200;
 }
-/*#drawText{
+#drawText{
   cursor: move !important;
   z-index: 201;
   display: none;
-}*/
+}
 #canvasBg {
   top: 50%;
   left: 50%;

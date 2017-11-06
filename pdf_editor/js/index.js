@@ -1,5 +1,5 @@
-  "use strict";
-  $(function(){
+"use strict";
+function draw_pdf_and_page(){
   // If absolute URL from the remote server is provided, configure the CORS
   // header on that server.
  // var url = 'pdfs/original/test-mult.pdf';
@@ -13,12 +13,14 @@
       pageRendering = false,
       pageNumPending = null,
       scale = 1.0,
-      canvas = $('#draw')[0],
-      grid_canvas = $('#theGrid'),
-      ctx = canvas.getContext('2d');
-
+      canvas_pdf = $('#draw')[0],
+      grid_canvas_pdf = $('#theGrid'),
+      ctx = canvas_pdf.getContext('2d'),
+      canvas_Bg = $('#canvasBg')[0],
+      text_canvas = $("#drawText")[0];
+      
   /**
-   * Get page info from document, resize canvas accordingly, and render page.
+   * Get page info from document, resize canvas_pdf accordingly, and render page.
    * @param num Page number.
    */
   function renderPage(num) {
@@ -29,18 +31,19 @@
       pageRendering = true;
       // Using promise to fetch the page
       pdfDoc.getPage(num).then(function (page) {
-          canvas.width = 800;
-          var correctScale=canvas.width / page.getViewport(scale).width;
+          canvas_pdf.width = 800;
+          var correctScale=canvas_pdf.width / page.getViewport(scale).width;
           var viewport = page.getViewport(correctScale);
-          canvas.height = viewport.height;
-        
-          // Render PDF page into canvas context
+          canvas_pdf.height = viewport.height;
+          text_canvas.height = viewport.height;
+          canvas_Bg.height = viewport.height;
+          // Render PDF page into canvas_pdf context
           var renderContext = {
               canvasContext: ctx,
               viewport: viewport
           };
           var renderTask = page.render(renderContext);
-
+          ctx.lineCap = "round";
           // Wait for rendering to finish
           renderTask.promise.then(function () {
               pageRendering = false;
@@ -106,7 +109,7 @@
 
 
       return Promise.all(pages.map(function (num) {
-          // create a div for each page and build a small canvas for it
+          // create a div for each page and build a small canvas_pdf for it
           var div = document.createElement("div");
           div.setAttribute("page",num);
           div.addEventListener("click",onThumbClick);
@@ -131,7 +134,7 @@
   }
 
   function makeThumb(page) {
-      // draw page to fit into 96x96 canvas
+      // draw page to fit into 96x96 canvas_pdf
       var vp = page.getViewport(1);
       var canvas = document.createElement("canvas");
       canvas.width = canvas.height = 96;
@@ -142,18 +145,16 @@
     }).promise.then(function () {
         return canvas;
     });
+    }
 }
-
-
 
 $('#gridOn').on('click', function(e) {
     if ($(this).prop('checked')) {
-      grid_canvas.addClass('grid');
+      grid_canvas_pdf.addClass('grid');
     }
     else {
-      grid_canvas.removeClass('grid');
+      grid_canvas_pdf.removeClass('grid');
     }
   });
 
-});
-  
+draw_pdf_and_page();
