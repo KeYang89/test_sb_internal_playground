@@ -272,6 +272,7 @@ body {
     top: 40%;
     left: 50%;
     z-index: -1;
+    max-height: 260px;
     -webkit-transform: translatex(-50%) translatey(-50%);
     transform: translatex(-50%) translatey(-50%);
 }
@@ -348,6 +349,8 @@ body {
 }
 .textPanel {
 	height: auto !important;
+  top: 20px;
+  left: 300px;
 }
 .textPanelTitle {
   border-top-right-radius: 5px;
