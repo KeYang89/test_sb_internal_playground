@@ -79,6 +79,7 @@ function erase() {
         activeTool(sprayTool, canSpray),
         sprayPanel.classList.add("hide"),
         textPanel.classList.add("hide"),
+        shapePanel.classList.add("hide"),
         brushPanel.classList.remove("hide"),
         (ctx.globalCompositeOperation = "destination-out")
       )
@@ -101,6 +102,7 @@ function showBrush() {
         activeTool(sprayTool, canSpray),
         sprayPanel.classList.add("hide"),
         textPanel.classList.add("hide"),
+        shapePanel.classList.add("hide"),
         brushPanel.classList.remove("hide")
       )
     : brushPanel.classList.add("hide");
@@ -165,11 +167,23 @@ function bgToolOn() {
     }, 250);
   }
 }
+function shapeOn() {
+ (canShape = !canShape), activeTool(shapeTool, canShape), canShape
+    ? (
+        brushPanel.classList.add("hide"),
+        textPanel.classList.add("hide"),
+        shapePanel.classList.remove("hide"),
+        sprayPanel.classList.add("hide")
+   )
+    : shapePanel.classList.add("hide");
+    //shapeCanvasLayerState();
+}
 function textOn() {
  (canText = !canText), activeTool(textTool, canText), canText
     ? (
         brushPanel.classList.add("hide"),
         textPanel.classList.remove("hide"),
+        shapePanel.classList.add("hide"),
         sprayPanel.classList.add("hide")
    )
     : textPanel.classList.add("hide");
@@ -182,6 +196,7 @@ function sprayOn() {
         (showBrushPanel = !1),
         brushPanel.classList.add("hide"),
         textPanel.classList.add("hide"),
+        shapePanel.classList.add("hide"),
         activeTool(brushTool, showBrushPanel),
         sprayPanel.classList.remove("hide")
       )
@@ -302,6 +317,9 @@ var canvas = document.querySelector("#draw"),
   textTool = document.querySelector(".text"),
   textPanel = document.querySelector(".textPanel"),
   textCross = document.querySelector("#textPanelCross"),
+  shapeTool = document.querySelector(".shape"),
+  shapePanel = document.querySelector(".shapePanel"),
+  shapeCross = document.querySelector("#shapePanelCross"),
   dlToolLink = document.querySelector("#download"),
   error = "watermark/error.png";
   loadCanvasBg(),
@@ -373,9 +391,16 @@ colorPicker.addEventListener(
 ), textCross.addEventListener(
   "click",
   textOn
+), shapeTool.addEventListener(
+  "click",
+  shapeOn
+), shapeCross.addEventListener(
+  "click",
+  shapeOn
 ), sprayCross.addEventListener("click", sprayOn);
 var canSpray = !1;
 var canText = !1;
+var canShape = !1;
 sprayRadius.addEventListener(
   "mousemove",
   changeSpray

@@ -9,6 +9,14 @@ canvas#draw, canvas#drawText {
     border: none;
     padding: 5px;
 }
+#submitShape{
+    color: #333;
+    margin: 5px;
+    width: 60px;
+    background: #dcdcdc;
+    border: none;
+    padding: 5px;
+}
 #theText {
   border:none;
   outline:none;
@@ -215,7 +223,7 @@ body {
   font-family: Helvetica;
 }
 
-.brushPanel, .imgNav, .sprayPanel, .textPanel {
+.brushPanel, .imgNav, .sprayPanel, .textPanel, .shapePanel {
   height: 180px;
   width: 266.6px;
   display: -ms-flexbox;
@@ -249,7 +257,13 @@ body {
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }
-
+.shapePanel {
+  left: 15px;
+  right: auto;
+  width: 70px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
 #canvasImg {
   max-width: 250px;
   max-height: 150px;
@@ -444,12 +458,14 @@ body {
   transition: transform 0s linear 1.5s, width 1.5s linear 0s, opacity .5s linear 1.5s, -webkit-transform 0s linear 1.5s;
 }
 
-#download, .bg, .brush, .text, .clear, .eraser, .nav, .rainbow, .save, .spray {
+#download, .bg, .brush, .text, .clear, .eraser, .nav, .rainbow, .save, .spray, .shape {
   background-image: url(../svg/paintBrush.svg);
   background-position: 50%;
   background-repeat: no-repeat;
 }
-
+.shape {
+  background-image: url(../svg/shape.svg);
+}
 .eraser {
   background-image: url(../svg/eraser.svg);
 }
@@ -482,7 +498,24 @@ body {
 #download {
   background-image: url(../svg/download.svg);
 }
+.rectangle {
+  background-image: url(../svg/rect.svg);
+}
+.poly {
+  background-image: url(../svg/poly.svg);
+}
+.ellipse {
+  background-image: url(../svg/ellipse.svg);
+}
+.circle {
+  background-image: url(../svg/circle.svg);
+}
+.rectangle, .poly, .ellipse, .circle {
+  background-repeat: no-repeat;
+  background-position: 50%;
+  float: left;
 
+}
 a#download, a#download:active, a#download:hover, a#download:visited {
   height: 100%;
   width: 100%;
