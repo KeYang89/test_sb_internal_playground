@@ -21,8 +21,23 @@ function textCanvasLayerState(){
       return hideTextCanvas();
     }
 }
+function svgLayerState(){
+    if (canShape) {
+      return addShape();
+    }
+    else {
+      return hideShape();
+    }
+}
+function addShape(){
+  $("#drawSvg").show();
+}
+function hideShape(){
+  $("#drawSvg").hide();
+}
 function draw(e) {
   textCanvasLayerState();
+  svgLayerState();
   if (!isDrawing) return changeBrushSize(), void changeBrushOpacity();
   if (canSpray)
     for (var a = density; a--; ) {
@@ -73,6 +88,7 @@ function activeTool(e, a) {
 }
 function erase() {
   textCanvasLayerState();
+  svgLayerState();
   (canErase = !canErase), activeTool(eraser, canErase), canErase
     ? (
         (canSpray = !1),
@@ -87,12 +103,14 @@ function erase() {
 }
 function rain() {
   textCanvasLayerState();
+  svgLayerState();
   (canRain = !canRain), activeTool(rainbow, canRain), canRain
     ? ((canSpray = !1), activeTool(sprayTool, canSpray), (changeHue = !0))
     : (changeHue = !1);
 }
 function showBrush() {
   textCanvasLayerState();
+  svgLayerState();
   (showBrushPanel = !showBrushPanel), activeTool(
     brushTool,
     showBrushPanel
@@ -115,8 +133,13 @@ function showNav() {
     ? navPanel.classList.remove("hide")
     : navPanel.classList.add("hide");
 }
+function selectColorOp() {
+  textCanvasLayerState();
+  svgLayerState();
+}
 function selectColor() {
   textCanvasLayerState();
+  svgLayerState();
   (canRain = !1), activeTool(rainbow, canRain), (changeHue = !1);
 }
 function changeBrushSize() {
@@ -139,6 +162,7 @@ function changeBrushSize() {
 }
 function changeBrushOpacity() {
   textCanvasLayerState();
+  svgLayerState();
   var e = colorPicker.value.replace("#", ""),
     a = rgbToHsl(e);
   (ctx.strokeStyle =
@@ -154,6 +178,7 @@ function changeBrushOpacity() {
 }
 function bgToolOn() {
   textCanvasLayerState();
+  svgLayerState();
   if ((isBgTool = !isBgTool)) {
     bgTool.classList.add("active"), ctxBg.rect(
       0,
@@ -176,7 +201,105 @@ function shapeOn() {
         sprayPanel.classList.add("hide")
    )
     : shapePanel.classList.add("hide");
-    //shapeCanvasLayerState();
+    textCanvasLayerState();
+    svgLayerState();
+}
+function drawpoly(newshape,isClose,isCloud){
+      var polyshape;
+      if (isCloud){
+        polyshape = shapeStyle(newshape.polyline());
+        polyshape = cloudStyle(polyshape);
+      }
+      else{
+        if (isClose) {
+        polyshape = shapeStyle(newshape.polygon());
+        }
+        else {
+        polyshape = shapeStyle(newshape.polyline());
+        }
+      }
+      polyEnd(polyshape);
+}
+function polyEnd(polyshape){
+  $("#hint").html("Hit Enter when you finish editing the shape");
+  $("#hint").show(600);
+     polyshape.on('drawstart', function(e){
+          document.addEventListener('keydown', function(e){
+            console.log("11")
+              if(e.keyCode == 13){
+                  polyshape.draw('done');
+                  polyshape.off('drawstart');
+                  $("#hint").html("Then Click 'Save'");
+                  $("#submitShape").css("background","green");
+              }
+          });
+      });
+
+      polyshape.on('drawstop', function(){
+      // remove listener
+      });
+}
+
+function shapeStyle(s){
+  var lineWeight = parseInt($('#shapeStroke').val());
+
+  var isDashed = $('#shapeDashedOn').prop('checked');
+  if (isNaN(lineWeight) || lineWeight < 0) {
+    lineWeight = 1;
+  }
+  var strokeColor=colorPicker.value;
+  var fillOp=fillOpacity.value;
+  var _s=s.draw().attr('stroke-width',lineWeight)
+          .attr('stroke',strokeColor)
+          .attr('fill',fillColor)
+          .attr('fill-opacity',fillOp);
+  if (isDashed) {
+     return _s.attr('stroke-dasharray','10 5');
+  }
+  else {
+    return _s;
+  }
+}
+function cloudStyle(s){
+  var _s = s.attr('stroke-linejoin','round')
+  .attr('stroke-linecap','round')
+  .attr('shape-rendering', 'geometricPrecision');
+
+  // var svg=$('#drawSvg > svg')[0];
+
+  //   --------------in testing-------------------
+  //   var amplitude = 10; // wave amplitude
+  //   var rarity = 1; // point spacing
+  //   var freq = 0.1; // angular frequency
+  //   var phase = 20; // phase angle
+
+  //   for (var i = -100; i < 1000; i++) {
+  //       var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+  //       line.setAttribute('x1', (i - 1) * rarity + origin.x);
+  //       line.setAttribute('y1', Math.sin(freq * (i - 1 + phase)) * amplitude);
+
+  //       line.setAttribute('x2', i * rarity + origin.x);
+  //       line.setAttribute('y2', Math.sin(freq * (i + phase)) * amplitude);
+
+  //       line.setAttribute('style', "stroke:black;stroke-width:1");
+
+  //       svg.appendChild(line);
+  //   }
+
+}
+function shapeToolOn(shape){
+  var newshape = SVG("drawSvg").size('100%', '100%');
+
+  switch (shape) {
+        case "rect": shapeStyle(newshape.rect()); break;
+        case "circle": shapeStyle(newshape.circle()); break;
+        case "polygon": drawpoly(newshape,true,false);break;
+        case "polyline": drawpoly(newshape,false,false);break;
+        case "ellipse": shapeStyle(newshape.ellipse()); break;
+        case "cloud":  drawpoly(newshape,false,true); break;
+        default: console.log("Illegal Shape!");
+   }
 }
 function textOn() {
  (canText = !canText), activeTool(textTool, canText), canText
@@ -188,9 +311,11 @@ function textOn() {
    )
     : textPanel.classList.add("hide");
     textCanvasLayerState();
+    svgLayerState();
 }
 function sprayOn() {
   textCanvasLayerState();
+  svgLayerState();
   (canSpray = !canSpray), activeTool(sprayTool, canSpray), canSpray
     ? (
         (showBrushPanel = !1),
@@ -204,6 +329,7 @@ function sprayOn() {
 }
 function changeSpray() {
   textCanvasLayerState();
+  svgLayerState();
   (radius = sprayRadius.value), (density = sprayDensity.value);
 }
 function clearCanvas() {
@@ -297,6 +423,7 @@ var canvas = document.querySelector("#draw"),
   ctx = canvas.getContext("2d"),
   ctxBg = canvasBg.getContext("2d"),
   colorPicker = document.querySelector(".colorSelector"),
+  colorPickerOp = document.querySelector(".colorSelectorOp"),
   brushSize = document.querySelector(".brushSize"),
   brushSizePreview = document.querySelector(".brushSizePreview"),
   brushOpacity = document.querySelector(".brushOpacity"),
@@ -321,6 +448,15 @@ var canvas = document.querySelector("#draw"),
   shapePanel = document.querySelector(".shapePanel"),
   shapeCross = document.querySelector("#shapePanelCross"),
   dlToolLink = document.querySelector("#download"),
+  rectTool = document.querySelector(".rectangle"),
+  polyTool = document.querySelector(".poly"),
+  polylineTool = document.querySelector(".polyline"),
+  ellipseTool = document.querySelector(".ellipse"),
+  cloudTool = document.querySelector(".cloud"),
+  circleTool = document.querySelector(".circle"),
+  shapeFill = document.querySelector('#shapeFill'),
+  fillOpacity = document.querySelector("#fillOpacity"),
+  fillColor = 'none',
   error = "watermark/error.png";
   loadCanvasBg(),
   loadCanvas(), 
@@ -370,6 +506,12 @@ colorPicker.addEventListener(
 ), colorPicker.addEventListener(
   "mousemove",
   selectColor
+),colorPickerOp.addEventListener(
+  "click",
+  selectColorOp
+), colorPickerOp.addEventListener(
+  "mousemove",
+  selectColorOp
 ), brushSize.addEventListener(
   "mousemove",
   changeBrushSize
@@ -397,7 +539,27 @@ colorPicker.addEventListener(
 ), shapeCross.addEventListener(
   "click",
   shapeOn
-), sprayCross.addEventListener("click", sprayOn);
+), sprayCross.addEventListener(
+"click", 
+sprayOn), rectTool.addEventListener(
+  "click",
+  function(){shapeToolOn("rect");}, false
+), polyTool.addEventListener(
+  "click",
+  function(){shapeToolOn("polygon");}, false
+), ellipseTool.addEventListener(
+  "click",
+  function(){shapeToolOn("ellipse");}, false
+), circleTool.addEventListener(
+  "click",
+   function(){shapeToolOn("circle");}, false
+), cloudTool.addEventListener(
+  "click",
+   function(){shapeToolOn("cloud");}, false
+), polylineTool.addEventListener(
+  "click",
+   function(){shapeToolOn("polyline");}, false
+);
 var canSpray = !1;
 var canText = !1;
 var canShape = !1;
@@ -430,3 +592,36 @@ dlToolLink.addEventListener(
   },
   !1
 );
+
+$('#shapeFillOn').on('click', function(e) {
+    if ( $(this).prop('checked')) {
+      shapeFill.disabled = true;
+      fillOpacity.disabled = true;
+    }
+    else {
+      fillColor=colorPickerOp.value;
+      shapeFill.disabled = false;
+      fillOpacity.disabled = false;
+    }
+  });
+
+
+ $("#submitShape").click(function () {
+    $("#hint").hide(800);
+    var svgs=document.querySelector('#drawSvg > svg');
+    var svgString = new XMLSerializer().serializeToString(svgs);
+    var DOMURL = self.URL || self.webkitURL || self;
+    var img = new Image();
+    var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+    var url = DOMURL.createObjectURL(svg);
+    var adjusted_left = $("#drawSvg").offset().left-$("#draw").offset().left;
+    var adjusted_top= $("#drawSvg").offset().top-$("#draw").offset().top;
+    img.onload = function() {
+          ctx.drawImage(img,adjusted_left,adjusted_top);
+          svgs.remove();
+          shapeOn()
+      };
+    img.src = url;
+});
+
+

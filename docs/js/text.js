@@ -4,6 +4,8 @@ var source_canvas = $("#draw");
 var _source_canvas = source_canvas[0];
 var text_canvas = $("#drawText");
 var _text_canvas = text_canvas[0];
+// an array to hold text objects
+var texts = [];
 function addText() {
     text_canvas.show();
 
@@ -22,19 +24,20 @@ $(document).ready(function() {
     var text_startX;
     var text_startY;
 
-    // an array to hold text objects
-    var texts = [];
-
     // this var will hold the index of the hit-selected text
     var selectedText = -1;
     // clear the text_canvas & redraw all texts
+    function clearCanvas(c,_c){        
+        c.clearRect(0, 0, _c.width, _c.height);
+    }
     function drawText(c) {
-        c.clearRect(0, 0, _text_canvas.width, _text_canvas.height);
+        clearCanvas(c,_text_canvas);
         for (var i = 0; i < texts.length; i++) {
             var text = texts[i];
             c.fillStyle =  colorPicker.value;
             c.fillText(text.text, text.x, text.y);
         }
+
     }
 
     // test if x,y is inside the bounding box of texts[textIndex]
@@ -48,7 +51,8 @@ $(document).ready(function() {
     // mousedown'ed on one of them
     // If yes, set the selectedText to the index of that text
     function handleMouseDown(e) {
-
+        $("#submitTextOnCanvas").css("background","green");
+        $("#hint").html("Then click 'Save'");
         e.preventDefault();
         text_startX = parseInt(e.clientX - text_canvas.offset().left);
         text_startY = parseInt(e.clientY - text_canvas.offset().top);
@@ -114,10 +118,10 @@ $(document).ready(function() {
     });
 
     $("#submitText").click(function () {
-        console.log("text_submit");
         // calc the y coordinate for this text on the text_canvas
+        $("#hint").html("Drag and drop the text on the right place");
+        $("#hint").show(600);
         var y = texts.length * 20 + 20;
-
         // get the text from the input element
         var text = {
             text: $("#theText").val(),
@@ -126,7 +130,17 @@ $(document).ready(function() {
         };
 
         // calc the size of this text for hit-testing purposes
-        text_ctx.font = "16px verdana";
+       
+        var fontSize=parseInt($("#fontSize").val());
+        if (isNaN(fontSize) || fontSize < 0){
+            fontSize=16;
+        }
+
+        var font_selector = document.getElementById('selectFontFamily');
+        var font_family = font_selector.options[font_selector.selectedIndex].value;
+        text_ctx.font=fontSize+'px'+' '+font_family;
+        console.log(text_ctx.font)
+
         text.width = text_ctx.measureText(text.text).width;
         text.height = 16;
 
@@ -135,6 +149,16 @@ $(document).ready(function() {
 
         // redraw everything
         drawText(text_ctx);
+        $("#submitTextOnCanvas").show();
+    });
+    $("#submitTextOnCanvas").click(function () {
+        $("#hint").hide(600);
+
+        ctx.drawImage(_text_canvas, 0, 0);
+        clearCanvas(text_ctx,_text_canvas);
+        textOn();
+        texts=[];
+        $("#submitTextOnCanvas").hide();
     });
     $('.auto-text-area').on('keyup',function(){
             $(this).css('height','auto');

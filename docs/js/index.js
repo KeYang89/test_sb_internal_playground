@@ -14,7 +14,6 @@ function draw_pdf_and_page(){
       pageNumPending = null,
       scale = 1.0,
       canvas_pdf = $('#draw')[0],
-      grid_canvas_pdf = $('#theGrid'),
       ctx = canvas_pdf.getContext('2d'),
       canvas_Bg = $('#canvasBg')[0],
       text_canvas = $("#drawText")[0];
@@ -147,7 +146,7 @@ function draw_pdf_and_page(){
     });
     }
 }
-
+var grid_canvas_pdf = $('#theGrid');
 $('#gridOn').on('click', function(e) {
     if ($(this).prop('checked')) {
       grid_canvas_pdf.addClass('grid');

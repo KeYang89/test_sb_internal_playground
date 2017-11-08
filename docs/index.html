@@ -12,8 +12,10 @@
 <body ondragover="dragOver(event)" ondrop="drop(event)">
 <script src="js/pdf.js"></script>
 <script src='js/jquery.min.js'></script>
+<div id="hint"></div>
 <canvas id="draw"></canvas>
 <canvas id="drawText" width=800 height=618></canvas>
+<div id="drawSvg"></div>
 <canvas id="canvasBg" width="800"></canvas>
 <canvas id="theGrid" class="grid"></canvas>
  <div class="imgNav drag" draggable="true" ondragstart="dragStart(event)" id="imgNav">
@@ -27,7 +29,7 @@
         <button id="next">></button>
         &nbsp; &nbsp;
         <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
-        <label id="grid-check">Grid: <input type="checkbox" id="gridOn" checked></label>
+        <label id="gridCheck">Grid: <input type="checkbox" id="gridOn" checked></label>
       </div>
   </div>
   </div>
@@ -57,21 +59,40 @@
   <div class="textPanel hide drag" id="textPanel" draggable="true" ondragstart="dragStart(event)">
     <div class="toolTitle textPanelTitle"><span class="cross" id="textPanelCross">&#x2715;</span></div>
     <label for="theText">Text</label>
-   <textarea id="theText" class="auto-text-area" type="text" placeholder="Click 'Add', drag and drop to place the text"></textarea>
-   <button id="submitText">Add</button>
+   <textarea id="theText" class="auto-text-area" type="text" placeholder="Type in here and click 'Add and test'"></textarea>
+   <label for="fontSize">Font Size (px)</label><input id="fontSize" placeholder="16" value="16"/>
+<label for="selectFontFamily">Font Family</label>
+  <select id="selectFontFamily" name="selectFontFamily">
+    <option> Serif </option>
+    <option> Arial </option>
+    <option> Sans-Serif </option>                                  
+    <option> Tahoma </option>
+    <option> Verdana </option>
+    <option> Lucida Sans Unicode </option>                               
+  </select>
+   <button id="submitText">Add and test</button><button id="submitTextOnCanvas">Save</button>
   </div>
  <!--  (in dev mode) -->
   <div class="shapePanel hide drag" id="shapePanel" draggable="true" ondragstart="dragStart(event)">
     <div class="toolTitle shapePanelTitle"><span class="cross" id="shapePanelCross">&#x2715;</span></div>
     <div class="tool rectangle" data-tool-tip="rectangle"></div>
-    <div class="tool poly" data-tool-tip="poly"></div>
+    <div class="tool poly" data-tool-tip="polygon"></div>
     <div class="tool ellipse" data-tool-tip="ellipse"></div>
     <div class="tool circle" data-tool-tip="circle"></div>
-   <button id="submitShape">Add</button>
+    <div class="tool cloud" data-tool-tip="cloud"></div>
+    <div class="tool polyline" data-tool-tip="polyline"></div>
+    <label for="shapeStroke">Line Weight</label><input id="shapeStroke" data-tool-tip="Stroke Weight/Width" placeholder="1">
+    <label for="fillOpacity">Fill Opacity</label>
+    <input type="range" class="fillOpacity" value="0.2" min="0.1" max="1" step=".1" id="fillOpacity" disabled="">
+    <label for="shapeFill">Fill Color</label><input type="color" class="tool colorSelectorOp" id="shapeFill" value="#ffff00" data-tool-tip="Select Fill Colour" disabled="">
+    <label id="fillCheck">No Fill: <input type="checkbox" id="shapeFillOn" checked=""></label>
+    <label id="dashedCheck">Dashed: <input type="checkbox" id="shapeDashedOn" checked=""></label>
+   <button id="submitShape">Save</button>
   </div>
 <!--   (in dev mode) -->
   <div class="toolbar drag" id="drag-tool" draggable="true" ondragstart="dragStart(event)">
     <div class="toolTitle">&#x2715;</div>
+    <input type="color" class="tool colorSelector" value="#e53935" data-tool-tip="Select Colour">
     <div class="tool shape" data-tool-tip="Add Shape, click 'Add', drag and drop"></div>
     <div class="tool brush" data-tool-tip="Brush Size &amp; Opacity"></div>
     <div class="tool rainbow" data-tool-tip="Rainbow Brush Tool"></div>
@@ -85,14 +106,15 @@
     <div class="tool dl" data-tool-tip="Download As PNG">
       <a id="download"></a>
     </div>
-    <input type="color" class="tool colorSelector" value="#e53935" data-tool-tip="Select Colour">
+  
 
   </div>
 
-     
+    <script src='js/svg.min.js'></script>
     <script  src="js/index.js"></script>
     <script  src="js/app.js"></script>
     <script  src="js/text.js"></script>
+    
 </body>
 </html>
 

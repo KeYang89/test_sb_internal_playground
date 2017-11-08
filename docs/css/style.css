@@ -1,13 +1,46 @@
-canvas#draw, canvas#drawText {
+#hint, canvas#draw, canvas#drawText, #drawSvg, #drawSvg svg {
   position: absolute;
 }
-#submitText {
+#hint {
+  z-index: 9999;
+  color:white;
+  background: rgba(0,0,0,0.5);
+  top:5px;
+  font-size:20px;
+  padding:10px;
+  display: none;
+}
+#shapeStroke, #fontSize {
+  width:  60px;
+  padding: 5px;
+  margin: 5px;
+  color: #333;
+  border: none;
+  float: left;
+  text-align: center;
+  height: 22px;
+}
+#submitText,#submitTextOnCanvas {
     color: #333;
     margin: 5px;
-    width: 60px;
     background: #dcdcdc;
     border: none;
     padding: 5px;
+    height: 22px;
+}
+#submitText:hover, #submitShape:hover,#submitTextOnCanvas:hover {
+   background: white;
+}
+#submitText {
+  width: 120px;
+}
+#submitTextOnCanvas {
+  width: 60px;
+  display: none;
+}
+#fillOpacity {
+  width: 60px;
+  height: 40px;
 }
 #submitShape{
     color: #333;
@@ -16,6 +49,7 @@ canvas#draw, canvas#drawText {
     background: #dcdcdc;
     border: none;
     padding: 5px;
+    height: 22px;
 }
 #theText {
   border:none;
@@ -23,6 +57,7 @@ canvas#draw, canvas#drawText {
   resize:none;
   word-wrap: break-word;
   height: 30px;
+  margin: 5px;
 }
 #thumbnail-pdf {
   width:auto;
@@ -58,9 +93,10 @@ canvas.grid {
 #button-set > * {
 	vertical-align: middle;
 }
-#grid-check, #gridOn{
+#gridCheck, #gridOn, #fillCheck, #shapeFillOn, #dashedCheck, #shapeDashedOn{
 	margin-left: 5px;
 	vertical-align: middle;
+  height: 20px;
 }
 #imgNav {
     height: auto;
@@ -263,6 +299,7 @@ body {
   width: 70px;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
+  height: 480px;
 }
 #canvasImg {
   max-width: 250px;
@@ -294,10 +331,16 @@ body {
   cursor: crosshair !important;
   z-index: 200;
 }
-#drawText{
+#drawText, #drawSvg{
   cursor: move !important;
   z-index: 201;
   display: none;
+}
+#drawSvg {
+  min-height: 100vh;
+  min-width: 100vh;
+  width: 100%;
+  height: 100%;
 }
 #canvasBg {
   top: 50%;
@@ -365,6 +408,7 @@ body {
 	height: auto !important;
   top: 20px;
   left: 300px;
+  padding-bottom: 12px;
 }
 .textPanelTitle {
   border-top-right-radius: 5px;
@@ -502,6 +546,9 @@ body {
   background-image: url(../svg/rect.svg);
 }
 .poly {
+  background-image: url(../svg/shape2.svg);
+}
+.polyline {
   background-image: url(../svg/poly.svg);
 }
 .ellipse {
@@ -510,7 +557,10 @@ body {
 .circle {
   background-image: url(../svg/circle.svg);
 }
-.rectangle, .poly, .ellipse, .circle {
+.cloud {
+  background-image: url(../svg/cloud.svg);
+}
+.rectangle, .poly, .polyline, .ellipse, .circle, .cloud {
   background-repeat: no-repeat;
   background-position: 50%;
   float: left;
@@ -564,7 +614,9 @@ input[type=color]::-webkit-color-swatch {
 input[type=range] {
   width: 200px;
 }
-
+input[type=color]:disabled, input[type=range]:disabled {
+  opacity: 0.2;
+}
 .brushSizePreview {
   width: 10px;
   height: 10px;
