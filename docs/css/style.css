@@ -23,7 +23,16 @@ display: none;
     height: 30px;
     color: #333;
 }
-
+.note {
+  text-align: center;
+  width: 100%;
+  margin: auto;
+  float: left;
+}
+.note a{
+  color:rgba(81, 203, 238, 1);
+  text-decoration: none;
+}
 #color-input {
   display: none;
 }
