@@ -8,6 +8,58 @@ z-index: 9998;
 background: rgba(255,255,255,0.5);
 display: none;
 }
+/*for IE Edge*/
+.IEColorPicker {
+  display: none;
+  z-index: 9999;
+}
+#closeIEColorPicker {
+    background: #dcdcdc;
+    text-align: center;
+    margin: auto;
+    margin-left: 60px;
+    width: 60px;
+    border: none;
+    height: 30px;
+    color: #333;
+}
+
+#color-input {
+  display: none;
+}
+#color-label {
+  margin-left: 0px;
+  position: absolute;
+  height: 45px;
+  width: 50px;
+  border: 6px solid #535353;
+  top:24px;
+} 
+#color-input:checked ~ #color-picker {
+  opacity: 1;
+}
+#color-picker {
+  position: absolute;
+  left: 70px; 
+  background-color: transparent;
+  height: 150px;
+  width: 180px;
+  border: none;
+  opacity: 0;
+}
+#theGrid, #drawSvg,.cover{
+  left:0px;
+  top:0px;
+}
+#drawText,#draw {
+  left:60px;
+  top:30px;
+}
+/*end for IE Edge*/
+select#selectDemo {
+  float: right;
+  margin-top: 2px;
+}
 #hint {
   z-index: 9999;
   color:white;
@@ -118,18 +170,23 @@ display: none;
   height:100px;
   text-align: center;
   display: flex;
+  margin: 5px;
+}
+#thumbnail-pdf div {
+  border: 2px solid transparent;
 }
 .page-active {
-  border:1px solid blue;
+  border:2px solid rgba(81, 203, 238, 1) !important;
 }
 #toolkit button {
 	background: #fff;
 	color:#333;
-    border: none;
-    box-shadow: none;
-    padding: 0px 2px;
-    width: 18px;
-    font-size: 11px;
+  height: 18px;
+  border: none;
+  box-shadow: none;
+  padding: 0px 2px;
+  width: 18px;
+  font-size: 11px;
 }
 canvas.grid {
 	min-width: 1200px;
@@ -143,9 +200,11 @@ canvas.grid {
 }
 #button-set {
 	height: 20px;
+  padding: 0px 5px;
 }
 #button-set > * {
 	vertical-align: middle;
+  font-size: 11px;
 }
 #gridCheck, #gridOn, #fillCheck, #shapeFillOn, #dashedCheck, #shapeDashedOn{
 	margin-left: 5px;
@@ -154,9 +213,8 @@ canvas.grid {
 }
 #imgNav {
     height: auto;
-    width: 50%;
+    width: auto;
     min-width: 250px;
-    max-width: 400px;
 }
 a,
 abbr,

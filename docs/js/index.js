@@ -1,10 +1,15 @@
 "use strict";
-function draw_pdf_and_page(){
+function updateDemo(){
+ var url = $("#selectDemo").val();
+ clearThumb();
+ drawPdfWithThumb(url);
+}
+function clearThumb(){
+  $('#thumbnail-pdf').html('');
+}
+function drawPdfWithThumb(url){
   // If absolute URL from the remote server is provided, configure the CORS
   // header on that server.
- // var url = 'pdfs/original/test-mult.pdf';
-  var url = 'pdfs/original/test-single.pdf';
-
   // The workerSrc property shall be specified.
   PDFJS.workerSrc = 'js/pdf.worker.js';
 
@@ -16,6 +21,7 @@ function draw_pdf_and_page(){
       canvas_pdf = $('#draw')[0],
       ctx = canvas_pdf.getContext('2d'),
       canvas_Bg = $('#canvasBg')[0],
+      svg_div = $("#drawSvg"),
       text_canvas = $("#drawText")[0];
       
   /**
@@ -36,6 +42,7 @@ function draw_pdf_and_page(){
           canvas_pdf.height = viewport.height;
           text_canvas.height = viewport.height;
           canvas_Bg.height = viewport.height;
+          svg_div.height(viewport.height);
           // Render PDF page into canvas_pdf context
           var renderContext = {
               canvasContext: ctx,
@@ -156,4 +163,4 @@ $('#gridOn').on('click', function(e) {
     }
   });
 
-draw_pdf_and_page();
+updateDemo();

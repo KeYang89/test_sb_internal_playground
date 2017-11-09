@@ -30,6 +30,10 @@
         &nbsp; &nbsp;
         <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
         <label id="gridCheck">Grid: <input type="checkbox" id="gridOn" checked></label>
+        <select id="selectDemo" name="selectDemo" onchange="updateDemo()">
+              <option value="pdfs/original/test-single.pdf"> Single Page PDF Demo </option>
+              <option value="pdfs/original/test-mult.pdf"> Multiple Page PDF Demo </option>
+        </select>
       </div>
   </div>
   </div>
@@ -72,7 +76,8 @@
   </select>
    <button id="submitText">Add and test</button><button id="submitTextOnCanvas">Save</button>
   </div>
- <!--  (in dev mode) -->
+
+</div>
   <div class="shapePanel hide drag" id="shapePanel" draggable="true" ondragstart="dragStart(event)">
     <div class="toolTitle shapePanelTitle"><span class="cross" id="shapePanelCross">&#x2715;</span></div>
     <div class="tool rectangle" data-tool-tip="rectangle"></div>
@@ -92,7 +97,8 @@
 <!--   (in dev mode) -->
   <div class="toolbar drag" id="drag-tool" draggable="true" ondragstart="dragStart(event)">
     <div class="toolTitle">&#x2715;</div>
-    <input type="color" class="tool colorSelector" value="#e53935" data-tool-tip="Select Colour">
+    <input type="color" class="tool colorSelector" value="#ff0000" id="colorInCaseIE" data-tool-tip="Select Colour">
+    <div class="IEColorPicker"></div>
     <div class="tool shape" data-tool-tip="Add Shape, click 'Add', drag and drop"></div>
     <div class="tool brush" data-tool-tip="Brush Size &amp; Opacity"></div>
     <div class="tool rainbow" data-tool-tip="Rainbow Brush Tool"></div>
@@ -101,8 +107,8 @@
     <div class="tool bg" data-tool-tip="Change Background Colour"></div>
     <div class="tool eraser" id="eraserTool" data-tool-tip="Eraser Tool"></div>
     <div class="tool nav active" data-tool-tip="Navigator Hide/Show"></div>
-    <div class="tool save" data-tool-tip="Save Canvas"></div>
-    <div class="tool clear" data-tool-tip="Clear Canvas"></div>
+    <div class="tool save" data-tool-tip="Save For Download"></div>
+    <div class="tool clear" data-tool-tip="Clear"></div>
     <div class="tool dl" data-tool-tip="Download As PNG">
       <a id="download"></a>
     </div>
@@ -114,7 +120,13 @@
     <script  src="js/index.js"></script>
     <script  src="js/app.js"></script>
     <script  src="js/text.js"></script>
-    
+    <script type="text/javascript">
+      if (isIE) {
+        $('.IEColorPicker').html('<label for="color-input" id="color-label" style="background-color: red"></label><input type="checkbox" id="color-input" checked></input><div id="color-picker"><button id="closeIEColorPicker" onclick="colorPickerIE()">Close</button><canvas id="color-block" height="150" width="150"></canvas><canvas id="color-strip" height="150" width="30"></canvas>');
+        //replace input type color with IE friendly color picker
+        colorPickerIESet();
+      }
+    </script>
 </body>
 </html>
 
