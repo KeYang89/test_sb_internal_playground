@@ -52,6 +52,7 @@ $(document).ready(function() {
     // If yes, set the selectedText to the index of that text
     function handleMouseDown(e) {
         $("#submitTextOnCanvas").css("background","green");
+        $("#submitTextOnCanvas").css("color","white");
         $("#hint").html("Then click 'Save'");
         e.preventDefault();
         text_startX = parseInt(e.clientX - text_canvas.offset().left);

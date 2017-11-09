@@ -1,5 +1,12 @@
-#hint, canvas#draw, canvas#drawText, #drawSvg, #drawSvg svg {
+#hint, canvas#draw, canvas#drawText, #drawSvg, #drawSvg svg,.cover {
   position: absolute;
+}
+.cover {
+width: 100%;
+height: 100%;
+z-index: 9998;
+background: rgba(255,255,255,0.5);
+display: none;
 }
 #hint {
   z-index: 9999;
@@ -9,6 +16,53 @@
   font-size:20px;
   padding:10px;
   display: none;
+}
+#drawSvg .cloudSketch {
+  stroke-dasharray: 10;
+  animation: dash 5s linear infinite;
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: 100;
+  }
+}
+#reminderSaveShape {
+    z-index: 99999;
+    width: 200px;
+    margin: auto;
+    margin-top: 80px;
+    background: rgba(0,0,0,0.8);
+    padding: 10px;
+    color: white;
+}
+#reminderSaveShape button {
+    color: #333;
+    background: #dcdcdc;
+    border: none;
+    width: 60px;
+    padding: 5px 10px;
+    margin-top: 5px;
+}
+#reminderSaveShape .cancel {
+  float:right;
+}
+@keyframes shadowPulse {
+    0% {
+        box-shadow: none;
+    }
+    50% {
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1) inset;
+    }
+    100% {
+        box-shadow: none;
+    }
+}
+
+.shadow-pulse {
+    animation-name: shadowPulse;
+    animation-duration: 1s;
+    animation-iteration-count: 2;
+    animation-timing-function: linear;
 }
 #shapeStroke, #fontSize {
   width:  60px;
@@ -545,7 +599,7 @@ body {
 .rectangle {
   background-image: url(../svg/rect.svg);
 }
-.poly {
+.polygon {
   background-image: url(../svg/shape2.svg);
 }
 .polyline {
@@ -560,11 +614,10 @@ body {
 .cloud {
   background-image: url(../svg/cloud.svg);
 }
-.rectangle, .poly, .polyline, .ellipse, .circle, .cloud {
+.rectangle, .polygon, .polyline, .ellipse, .circle, .cloud {
   background-repeat: no-repeat;
   background-position: 50%;
   float: left;
-
 }
 a#download, a#download:active, a#download:hover, a#download:visited {
   height: 100%;

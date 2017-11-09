@@ -198,7 +198,8 @@ function shapeOn() {
         brushPanel.classList.add("hide"),
         textPanel.classList.add("hide"),
         shapePanel.classList.remove("hide"),
-        sprayPanel.classList.add("hide")
+        sprayPanel.classList.add("hide"),
+        $('.shapePanel .tool').addClass("shadow-pulse")
    )
     : shapePanel.classList.add("hide");
     textCanvasLayerState();
@@ -206,31 +207,59 @@ function shapeOn() {
 }
 function drawpoly(newshape,isClose,isCloud){
       var polyshape;
-      if (isCloud){
-        polyshape = shapeStyle(newshape.polyline());
-        polyshape = cloudStyle(polyshape);
+      if (isClose) {
+      polyshape = shapeStyle(newshape.polygon(),isCloud);
       }
-      else{
-        if (isClose) {
-        polyshape = shapeStyle(newshape.polygon());
-        }
-        else {
-        polyshape = shapeStyle(newshape.polyline());
-        }
+      else {
+      polyshape = shapeStyle(newshape.polyline(),isCloud);
       }
-      polyEnd(polyshape);
+      polyEnd(polyshape,isCloud);
 }
-function polyEnd(polyshape){
+
+var pointX = null, pointY = null, 
+prev_pointX = null, prev_pointY = null, 
+middleX = null, middleY=null; //for curves
+
+function polyEnd(polyshape,isCloud){
   $("#hint").html("Hit Enter when you finish editing the shape");
   $("#hint").show(600);
+  polyshape.on('drawpoint', function(e){
+    if (isCloud){
+        pointX = e.detail.p.x;
+        pointY = e.detail.p.y;
+       
+        if (middleX && middleY) {
+          if (prev_pointX && prev_pointY){
+              var dString='M'+pointX+','+pointY+' '+'Q'+middleX+','+middleY+' '+prev_pointX+','+prev_pointY;
+                  var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                  path.setAttribute('d',dString);
+                  renderLines(path,true);
+                  $('#drawSvg > svg')[0].appendChild(path);
+                  middleX=null;
+                  middleY=null;
+                }//end prev if
+              prev_pointX=middleX;
+              prev_pointY=middleY;
+              }//end mid if
+          middleX=pointX;
+          middleY=pointY;
+      }//end isCloud
+     });
      polyshape.on('drawstart', function(e){
-          document.addEventListener('keydown', function(e){
-            console.log("11")
+          if (isCloud){
+              middleX = e.detail.p.x;
+              middleY = e.detail.p.y;
+          }    
+           document.addEventListener('keydown', function(e){
               if(e.keyCode == 13){
                   polyshape.draw('done');
                   polyshape.off('drawstart');
+                  $('.shapePanel .tool').removeClass("active");
                   $("#hint").html("Then Click 'Save'");
-                  $("#submitShape").css("background","green");
+                  if (isCloud){
+                    $('#drawSvg > svg > .cloudSketch').remove();
+                  }
+
               }
           });
       });
@@ -238,68 +267,82 @@ function polyEnd(polyshape){
       polyshape.on('drawstop', function(){
       // remove listener
       });
+
 }
 
-function shapeStyle(s){
+function shapeStyle(s, isCloud){
+  var _s= s.draw();
+  _s = renderFill(_s);
+  if (isCloud){
+   return renderSketchLines(_s);
+  }
+  _s = renderLines(_s, isCloud);
+  return _s;
+}
+function renderSketchLines(_s){
+ //temporary lines for cloud shape
+    $('#drawSvg > svg > polyline').addClass('cloudSketch');
+    return  _s.attr('stroke-linejoin','round')
+    .attr('stroke-linecap','round')
+    .attr('stroke','grey')
+    .attr('stroke-dasharray','10')
+    .attr('shape-rendering', 'geometricPrecision');
+}
+function renderLines(_s, isCloud){
   var lineWeight = parseInt($('#shapeStroke').val());
+    var isDashed = $('#shapeDashedOn').prop('checked');
+    if (isNaN(lineWeight) || lineWeight < 0) {
+      lineWeight = 1;
+    }
+    var strokeColor=colorPicker.value;
+    if (!isCloud){
+        _s=_s.attr('stroke-width',lineWeight)
+                .attr('stroke',strokeColor)
 
-  var isDashed = $('#shapeDashedOn').prop('checked');
-  if (isNaN(lineWeight) || lineWeight < 0) {
-    lineWeight = 1;
-  }
-  var strokeColor=colorPicker.value;
-  var fillOp=fillOpacity.value;
-  var _s=s.draw().attr('stroke-width',lineWeight)
-          .attr('stroke',strokeColor)
-          .attr('fill',fillColor)
-          .attr('fill-opacity',fillOp);
-  if (isDashed) {
-     return _s.attr('stroke-dasharray','10 5');
-  }
-  else {
-    return _s;
-  }
+        if (isDashed) {
+           return _s.attr('stroke-dasharray','10 5');
+        }
+        else {
+          return _s;
+        }
+      }
+    else {
+       var styleString = "stroke:"+strokeColor+";stroke-width:"+lineWeight+";fill:none";
+       return _s.setAttribute('style',styleString);
+      }
 }
-function cloudStyle(s){
-  var _s = s.attr('stroke-linejoin','round')
-  .attr('stroke-linecap','round')
-  .attr('shape-rendering', 'geometricPrecision');
+function renderFill(_s){
+  var fillOp=fillOpacity.value;
+  return _s.attr('fill',fillColor).attr('fill-opacity',fillOp);
+}
 
-  // var svg=$('#drawSvg > svg')[0];
-
-  //   --------------in testing-------------------
-  //   var amplitude = 10; // wave amplitude
-  //   var rarity = 1; // point spacing
-  //   var freq = 0.1; // angular frequency
-  //   var phase = 20; // phase angle
-
-  //   for (var i = -100; i < 1000; i++) {
-  //       var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-
-  //       line.setAttribute('x1', (i - 1) * rarity + origin.x);
-  //       line.setAttribute('y1', Math.sin(freq * (i - 1 + phase)) * amplitude);
-
-  //       line.setAttribute('x2', i * rarity + origin.x);
-  //       line.setAttribute('y2', Math.sin(freq * (i + phase)) * amplitude);
-
-  //       line.setAttribute('style', "stroke:black;stroke-width:1");
-
-  //       svg.appendChild(line);
-  //   }
-
+function showReminder() {
+    if ($('#drawSvg > svg').length > 1){
+    //unsaved SVG detected 
+    $('.cover').html("<div id='reminderSaveShape'>Save the current editing?<br /><button onclick='saveShapeCanvas()'>Save</button> <button class='cancel' onclick='removeShapeNode()'>No</button></div>")
+    $('.cover').show();
+  }
 }
 function shapeToolOn(shape){
+  $('.shapePanel .tool').removeClass("active");
+  $('.'+shape).addClass("active");
   var newshape = SVG("drawSvg").size('100%', '100%');
+  $("#submitShape").css("background","green");
+  $("#submitShape").css("color","white");
+  $(".tool").click(function() {
+    showReminder();
+  })
 
   switch (shape) {
-        case "rect": shapeStyle(newshape.rect()); break;
-        case "circle": shapeStyle(newshape.circle()); break;
+        case "rectangle": shapeStyle(newshape.rect(),false); break;
+        case "circle": shapeStyle(newshape.circle(),false); break;
         case "polygon": drawpoly(newshape,true,false);break;
         case "polyline": drawpoly(newshape,false,false);break;
-        case "ellipse": shapeStyle(newshape.ellipse()); break;
+        case "ellipse": shapeStyle(newshape.ellipse(),false); break;
         case "cloud":  drawpoly(newshape,false,true); break;
         default: console.log("Illegal Shape!");
    }
+
 }
 function textOn() {
  (canText = !canText), activeTool(textTool, canText), canText
@@ -449,7 +492,7 @@ var canvas = document.querySelector("#draw"),
   shapeCross = document.querySelector("#shapePanelCross"),
   dlToolLink = document.querySelector("#download"),
   rectTool = document.querySelector(".rectangle"),
-  polyTool = document.querySelector(".poly"),
+  polyTool = document.querySelector(".polygon"),
   polylineTool = document.querySelector(".polyline"),
   ellipseTool = document.querySelector(".ellipse"),
   cloudTool = document.querySelector(".cloud"),
@@ -543,7 +586,7 @@ colorPicker.addEventListener(
 "click", 
 sprayOn), rectTool.addEventListener(
   "click",
-  function(){shapeToolOn("rect");}, false
+  function(){shapeToolOn("rectangle");}, false
 ), polyTool.addEventListener(
   "click",
   function(){shapeToolOn("polygon");}, false
@@ -607,9 +650,15 @@ $('#shapeFillOn').on('click', function(e) {
 
 
  $("#submitShape").click(function () {
-    $("#hint").hide(800);
-    var svgs=document.querySelector('#drawSvg > svg');
-    var svgString = new XMLSerializer().serializeToString(svgs);
+    saveShapeCanvas();
+    shapeOn();
+});
+
+function saveShapeCanvas(){
+    var node=document.querySelector('#drawSvg > svg');
+    $('.cover').hide();
+    $("#hint").hide(100);
+    var svgString = new XMLSerializer().serializeToString(node);
     var DOMURL = self.URL || self.webkitURL || self;
     var img = new Image();
     var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
@@ -618,10 +667,14 @@ $('#shapeFillOn').on('click', function(e) {
     var adjusted_top= $("#drawSvg").offset().top-$("#draw").offset().top;
     img.onload = function() {
           ctx.drawImage(img,adjusted_left,adjusted_top);
-          svgs.remove();
-          shapeOn()
+          removeShapeNode();  
       };
     img.src = url;
-});
+}
 
-
+function removeShapeNode(){
+  var node=document.querySelector('#drawSvg > svg');
+  node.remove();
+  $('.cover').hide();
+  $("#hint").hide(100);
+}
