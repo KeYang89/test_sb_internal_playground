@@ -656,7 +656,7 @@ body {
   
 }
 .redoIE {
-  background-image: url(../svg/redo-image.PNG) !important;
+  background-image: url(../svg/redo-image.png) !important;
   background-position-x: 8px;
   background-position-y: 2px;
   background-size:26px 28px;
