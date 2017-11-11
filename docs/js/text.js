@@ -6,6 +6,11 @@ var text_canvas = $("#drawText");
 var _text_canvas = text_canvas[0];
 // an array to hold text objects
 var texts = [];
+function fixIEtextarea() {
+    if (isIE){
+        $('#theText').unbind('click');
+    }
+}
 function addText() {
     text_canvas.show();
 

@@ -127,8 +127,7 @@ select#selectDemo {
 }
 #shapeStroke, #fontSize {
   width:  60px;
-  padding: 5px;
-  margin: 5px;
+  margin: 5px 0px;
   color: #333;
   border: none;
   float: left;
@@ -163,7 +162,6 @@ select#selectDemo {
     width: 60px;
     background: #dcdcdc;
     border: none;
-    padding: 5px;
     height: 22px;
 }
 #theText {
@@ -198,10 +196,10 @@ select#selectDemo {
   font-size: 11px;
 }
 canvas.grid {
-	min-width: 1200px;
-	min-height:800px;
+/*	min-width: 1200px;
+	min-height:800px;*/
 	width:100%;
-	height: auto;
+	height: 100%;
 	position: absolute;
     background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
     background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
@@ -380,7 +378,7 @@ body {
   font-family: Helvetica;
 }
 
-.brushPanel, .imgNav, .sprayPanel, .textPanel, .shapePanel {
+.brushPanel, .imgNav, .sprayPanel, .shapePanel,.textPanel {
   height: 180px;
   width: 266.6px;
   display: -ms-flexbox;
@@ -405,7 +403,9 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   z-index: 999;
 }
-
+.textPanel textarea {
+  flex: none !important;
+}
 .brushPanel, .sprayPanel, .textPanel {
   left: 15px;
   right: auto;
@@ -623,7 +623,7 @@ body {
   transition: transform 0s linear 1.5s, width 1.5s linear 0s, opacity .5s linear 1.5s, -webkit-transform 0s linear 1.5s;
 }
 
-#download, .bg, .brush, .text, .clear, .eraser, .nav, .rainbow, .save, .spray, .shape {
+.dl,.undo,.redo,.bg, .brush, .text, .clear, .eraser, .nav, .rainbow, .save, .spray, .shape {
   background-image: url(../svg/paintBrush.svg);
   background-position: 50%;
   background-repeat: no-repeat;
@@ -634,7 +634,19 @@ body {
 .eraser {
   background-image: url(../svg/eraser.svg);
 }
-
+.undo {
+  background-image: url(../svg/undo.svg);
+}
+.redo {
+  background-image: url(../svg/redo.svg);
+  
+}
+.redoIE {
+  background-image: url(../svg/redo-image.PNG) !important;
+  background-position-x: 8px;
+  background-position-y: 2px;
+  background-size:26px 28px;
+}
 .bg {
   background-image: url(../svg/paintBucket.svg);
 }
@@ -660,8 +672,9 @@ body {
   background-image: url(../svg/spraycan.svg);
 }
 
-#download {
+.dl {
   background-image: url(../svg/download.svg);
+  background-size: 24px; /*for IE*/
 }
 .rectangle {
   background-image: url(../svg/rect.svg);

@@ -12,6 +12,12 @@
 <body ondragover="dragOver(event)" ondrop="drop(event)">
 <script src="js/pdf.js"></script>
 <script src='js/jquery.min.js'></script>
+<script>
+//deal with IE
+var ua = window.navigator.userAgent;
+var msIE = ua.indexOf("MSIE ");
+var isIE = (msIE > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./));
+</script>
 <div id="hint"></div>
 <canvas id="draw"></canvas>
 <canvas id="drawText" width=800 height=618></canvas>
@@ -25,8 +31,8 @@
     <div id="toolkit">
       <div id="thumbnail-pdf"></div>
       <div id="button-set">
-        <button id="prev"><</button>
-        <button id="next">></button>
+        <button id="prev">&#10094;</button>
+        <button id="next">&#10095;</button>
         &nbsp; &nbsp;
         <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
         <label id="gridCheck">Grid: <input type="checkbox" id="gridOn" checked></label>
@@ -105,19 +111,25 @@
     <div class="tool brush" data-tool-tip="Brush Size &amp; Opacity"></div>
     <div class="tool rainbow" data-tool-tip="Rainbow Brush Tool"></div>
     <div class="tool text" data-tool-tip="Add Text, click 'Add', drag and drop to place the text"></div>
+    <div class="tool undo" data-tool-tip="Undo"></div>
+    <div class="tool redo" data-tool-tip="Redo"></div>
     <div class="tool spray" data-tool-tip="Spray Can Tool"></div>
     <div class="tool bg" data-tool-tip="Change Background Colour"></div>
     <div class="tool eraser" id="eraserTool" data-tool-tip="Eraser Tool"></div>
     <div class="tool nav active" data-tool-tip="Navigator Hide/Show"></div>
     <div class="tool save" data-tool-tip="Save For Download"></div>
     <div class="tool clear" data-tool-tip="Clear"></div>
-    <div class="tool dl" data-tool-tip="Download As PNG">
-      <a id="download"></a>
-    </div>
-  
-
+    <div class="tool dl" data-tool-tip="Download As PNG"><a id="download"></a> 
+    </div> 
   </div>
   <div class="cover"></div>
+    <script type="text/javascript">
+      if (isIE) {
+      document.write('<script src="js/Blob.js"><\/script><script src="js/canvas-toBlob.js"><\/script><script src="js/FileSaver.min.js"><\/script>');
+        $('#colorInCaseIE').css('textAlign','center');
+        $('.redo').addClass('redoIE')
+      }
+    </script>
     <script src='js/svg.min.js'></script>
     <script  src="js/index.js"></script>
     <script  src="js/app.js"></script>

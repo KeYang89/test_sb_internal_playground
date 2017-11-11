@@ -36,13 +36,30 @@ function drawPdfWithThumb(url){
       pageRendering = true;
       // Using promise to fetch the page
       pdfDoc.getPage(num).then(function (page) {
-          canvas_pdf.width = 800;
-          var correctScale=canvas_pdf.width / page.getViewport(scale).width;
-          var viewport = page.getViewport(correctScale);
-          canvas_pdf.height = viewport.height;
-          text_canvas.height = viewport.height;
-          canvas_Bg.height = viewport.height;
-          svg_div.height(viewport.height);
+          var viewport = page.getViewport(scale); //init
+          var correctScale = scale; //init
+          //if (viewport.height < viewport.width){
+            //landscape view
+            canvas_pdf.width = 800;
+            correctScale=canvas_pdf.width / viewport.width;
+            viewport = page.getViewport(correctScale);
+            canvas_pdf.height = viewport.height;
+            text_canvas.height = viewport.height;
+            canvas_Bg.height = viewport.height;
+            svg_div.height(viewport.height);
+          //}
+          // else {
+          //   //portrait view
+          //   canvas_pdf.height = 800;
+          //   correctScale=canvas_pdf.height / viewport.height;
+          //   viewport = page.getViewport(correctScale)
+          //   canvas_pdf.height = viewport.height;
+          //   text_canvas.height = viewport.height;
+          //   canvas_Bg.height = viewport.height;
+          //   svg_div.height(viewport.height);
+          //   $('body').height(viewport.height);
+          // }
+
           // Render PDF page into canvas_pdf context
           var renderContext = {
               canvasContext: ctx,

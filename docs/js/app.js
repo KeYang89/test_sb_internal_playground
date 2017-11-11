@@ -1,10 +1,4 @@
 "use strict";
-
-//deal with IE for color picker
-var ua = window.navigator.userAgent;
-var msIE = ua.indexOf("MSIE ");
-var isIE = (msIE > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./));
-
 function rgb2hex(rgb){
  rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
  return (rgb && rgb.length === 4) ? "#" +
@@ -183,11 +177,47 @@ function draw(e) {
       brushOpacity.value +
       ")";
   }
+
 var c = canvas.toDataURL("image/png"),
     l = canvasBg.toDataURL("image/png");
   (document.getElementById("canvasImg").src = c), (document.getElementById(
     "canvasBgImg"
   ).src = l);
+}
+function redoHistory(){
+//for better performance, require history.js
+//contact yangkecoy@gmail.com for details
+ var _temp;
+ if (canvasHistoryForRecovery.length < 1) {
+    return;
+ }
+ else {
+  _temp=canvasHistoryForRecovery[canvasHistoryForRecovery.length-1];
+ }
+ canvasHistoryForRecovery.pop();
+ rePaint(_temp);
+}
+function revertHistory(){
+  //for better performance, require history.js
+  //contact yangkecoy@gmail.com for details
+  canvasHistoryForRecovery.push(canvasHistory[canvasHistory.length - 1]);
+  canvasHistory.pop();
+  var _temp;
+  if (canvasHistory.length < 2) {
+    location.reload();
+  }
+  else{
+   _temp=canvasHistory[canvasHistory.length - 1];
+  }
+  rePaint(_temp);
+}
+function rePaint(_temp){
+   var _img = new window.Image();
+      _img.addEventListener("load", function () {
+          canvas.getContext("2d").drawImage(_img, 0, 0);
+      });
+    _img.setAttribute("src",_temp);
+    (document.getElementById("canvasImg").src = _temp);
 }
 function activeTool(e, a) {
   a ? e.classList.add("active") : e.classList.remove("active");
@@ -519,7 +549,14 @@ function saveCanvas() {
     );
 }
 function downloadCanvas(e, a, t) {
-  (e.href = document.getElementById(a).toDataURL()), (e.download = t);
+  var _for_blob=document.getElementById(a);
+  if (isIE) {
+    _for_blob.toBlobHD(function(blob) {
+      saveAs(blob, "testIE.png"); 
+    },"image/png");
+  } else{
+  (e.href = _for_blob.toDataURL()), (e.download = t);
+  }
 }
 function rgbToHsl(e) {
   var a = parseInt(e, 16),
@@ -553,7 +590,6 @@ function getRandomInt(e, a) {
   return Math.floor(Math.random() * (a - e + 1)) + e;
 }
 function dragStart(e) {
-  console.log(e);
   var a = window.getComputedStyle(e.target, null),
     t =
       parseInt(a.getPropertyValue("left")) -
@@ -584,6 +620,8 @@ var canvas = document.querySelector("#draw"),
   brushOpacity = document.querySelector(".brushOpacity"),
   brushTool = document.querySelector(".brush"),
   brushPanel = document.querySelector(".brushPanel"),
+  undoTool = document.querySelector(".undo"),
+  redoTool = document.querySelector(".redo"),
   navPanel = document.querySelector(".imgNav"),
   panelCross = document.querySelector("#panelCross"),
   navCross = document.querySelector("#imgNavCross"),
@@ -627,7 +665,7 @@ var isBgTool = !1,
   changeHue = !1,
   density = sprayDensity.value,
   radius = sprayRadius.value;
-
+var initContent=canvas.toDataURL(), canvasHistory=[initContent], canvasHistoryForRecovery=[initContent];
 canvas.addEventListener("mousedown", function(e) {
   isDrawing = !0;
   var a = [e.offsetX, e.offsetY];
@@ -636,6 +674,8 @@ canvas.addEventListener("mousedown", function(e) {
   "mousedown",
   draw
 ), canvas.addEventListener("mouseup", function() {
+  //set canvas history
+  canvasHistory.push(canvas.toDataURL());
   return (isDrawing = !1);
 }), canvas.addEventListener("mouseout", function() {
   return (isDrawing = !1);
@@ -714,6 +754,12 @@ sprayOn), rectTool.addEventListener(
 ), polylineTool.addEventListener(
   "click",
    function(){shapeToolOn("polyline");}, false
+), undoTool.addEventListener(
+  "click",
+   revertHistory
+), redoTool.addEventListener(
+  "click",
+   redoHistory
 );
 var canSpray = !1;
 var canText = !1;
@@ -771,17 +817,22 @@ function saveShapeCanvas(){
     $('.cover').hide();
     $("#hint").hide(100);
     var svgString = new XMLSerializer().serializeToString(node);
+    if (isIE){
+    svgString = svgString.replace('xmlns="http://www.w3.org/2000/svg"','') //a fix for IE, only remove the first duplicate
+    }
     var DOMURL = self.URL || self.webkitURL || self;
     var img = new Image();
     var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
     var url = DOMURL.createObjectURL(svg);
     var adjusted_left = $("#drawSvg").offset().left-$("#draw").offset().left;
     var adjusted_top= $("#drawSvg").offset().top-$("#draw").offset().top;
+    img.src = url;
     img.onload = function() {
           ctx.drawImage(img,adjusted_left,adjusted_top);
           removeShapeNode();  
       };
-    img.src = url;
+    
+    canvasHistory.push(url);
 }
 
 function removeShapeNode(){
