@@ -6,9 +6,17 @@ var text_canvas = $("#drawText");
 var _text_canvas = text_canvas[0];
 // an array to hold text objects
 var texts = [];
-function fixIEtextarea() {
+function fixIEtextarea(t) {
     if (isIE){
-        $('#theText').unbind('click');
+        $('#textPanel').attr('draggable', t);
+        if (t === 'true'){
+            $("#textPanel").removeClass('nodrag');
+        }
+        else{
+            $("#hint").html("Drag and drop disabled for now. Click 'Add and test'.");
+            $("#hint").show();
+            $("#textPanel").addClass('nodrag');
+        }
     }
 }
 function addText() {
@@ -124,6 +132,7 @@ $(document).ready(function() {
     });
 
     $("#submitText").click(function () {
+        fixIEtextarea('true');
         // calc the y coordinate for this text on the text_canvas
         $("#hint").html("Drag and drop the text on the right place");
         $("#hint").show(600);
@@ -145,8 +154,6 @@ $(document).ready(function() {
         var font_selector = document.getElementById('selectFontFamily');
         var font_family = font_selector.options[font_selector.selectedIndex].value;
         text_ctx.font=fontSize+'px'+' '+font_family;
-        console.log(text_ctx.font)
-
         text.width = text_ctx.measureText(text.text).width;
         text.height = 16;
 
@@ -166,7 +173,13 @@ $(document).ready(function() {
         texts=[];
         $("#submitTextOnCanvas").hide();
     });
+    
+    $('.auto-text-area').click(function(){
+       $('.auto-text-area').addClass('line-pulse')
+        fixIEtextarea('false');
+    });
     $('.auto-text-area').on('keyup',function(){
+            fixIEtextarea('false');
             $(this).css('height','auto');
             $(this).height(this.scrollHeight);
         });
