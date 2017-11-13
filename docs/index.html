@@ -124,11 +124,19 @@ var isIE = (msIE > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./));
   </div>
   <div class="cover"></div>
     <script type="text/javascript">
-      if (isIE) {
-      document.write('<script src="js/Blob.js"><\/script><script src="js/canvas-toBlob.js"><\/script><script src="js/FileSaver.min.js"><\/script>');
-        $('#colorInCaseIE').css('textAlign','center');
-        $('.redo').addClass('redoIE')
-      }
+
+        $('.cover').html("<div id='loader'><div class='dot'></div><div class='dot'></div><div class='dot'></div></div></div>");
+        $('.cover').css('background','white');
+        $('.cover').show(); 
+        if (isIE) {
+        document.write('<script src="js/Blob.js"><\/script><script src="js/canvas-toBlob.js"><\/script><script src="js/FileSaver.min.js"><\/script>');
+          $('#colorInCaseIE').css('textAlign','center');
+          $('.redo').addClass('redoIE');
+          
+        }
+        window.onload = function() {
+        $('.cover').fadeOut(2000);
+     };
     </script>
     <script src='js/svg.min.js'></script>
     <script  src="js/index.js"></script>

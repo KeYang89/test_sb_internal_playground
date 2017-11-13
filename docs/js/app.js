@@ -461,7 +461,7 @@ function renderFill(_s){
 function showReminder() {
     if ($('#drawSvg > svg').length > 1){
     //unsaved SVG detected 
-    $('.cover').html("<div id='reminderSaveShape'>Save the current editing?<br /><button onclick='saveShapeCanvas()'>Save</button> <button class='cancel' onclick='removeShapeNode()'>No</button></div>")
+    $('.cover').html("<div id='reminderSaveShape'>Save the current editing?<br /><button onclick='saveShapeCanvas()'>Save</button> <button class='cancel' onclick='removeShapeNode()'>No</button></div>");
     $('.cover').show();
   }
 }
@@ -675,7 +675,7 @@ canvas.addEventListener("mousedown", function(e) {
   draw
 ), canvas.addEventListener("mouseup", function() {
   //set canvas history
-  canvasHistory.push(canvas.toDataURL());
+  recordHistory();
   return (isDrawing = !1);
 }), canvas.addEventListener("mouseout", function() {
   return (isDrawing = !1);
@@ -810,6 +810,7 @@ $('#shapeFillOn').on('click', function(e) {
  $("#submitShape").click(function () {
     saveShapeCanvas();
     shapeOn();
+    recordHistory();
 });
 
 function saveShapeCanvas(){
@@ -818,7 +819,8 @@ function saveShapeCanvas(){
     $("#hint").hide(100);
     var svgString = new XMLSerializer().serializeToString(node);
     if (isIE){
-    svgString = svgString.replace('xmlns="http://www.w3.org/2000/svg"','') //a fix for IE, only remove the first duplicate
+    svgString = svgString.replace('xmlns="http://www.w3.org/2000/svg"',''); 
+    //a fix for IE, only remove the first duplicate
     }
     var DOMURL = self.URL || self.webkitURL || self;
     var img = new Image();
@@ -829,12 +831,13 @@ function saveShapeCanvas(){
     img.src = url;
     img.onload = function() {
           ctx.drawImage(img,adjusted_left,adjusted_top);
-          removeShapeNode();  
+          removeShapeNode(); 
       };
-    
-    canvasHistory.push(url);
 }
-
+function recordHistory(){
+   canvasHistory.push(canvas.toDataURL());
+   rePaint(canvasHistory[canvasHistory.length-1]);
+}
 function removeShapeNode(){
   var node=document.querySelector('#drawSvg > svg');
   node.remove();

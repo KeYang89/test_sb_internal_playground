@@ -70,7 +70,6 @@ $(document).ready(function() {
         e.preventDefault();
         text_startX = parseInt(e.clientX - text_canvas.offset().left);
         text_startY = parseInt(e.clientY - text_canvas.offset().top);
-        console.log(text_startY);
         // Put your mousedown stuff here
         for (var i = 0; i < texts.length; i++) {
             if (textHittest(text_startX, text_startY, i)) {
@@ -166,12 +165,12 @@ $(document).ready(function() {
     });
     $("#submitTextOnCanvas").click(function () {
         $("#hint").hide(600);
-
         ctx.drawImage(_text_canvas, 0, 0);
         clearCanvas(text_ctx,_text_canvas);
         textOn();
         texts=[];
         $("#submitTextOnCanvas").hide();
+        recordHistory();
     });
     
     $('.auto-text-area').click(function(){
