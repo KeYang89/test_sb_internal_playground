@@ -1,5 +1,0 @@
-@if (hasSection('search-fix-right'))
-			<div class="tm-search uk-hidden-small">
-				@section('search-fix-right')
-			</div>
-		@endif
