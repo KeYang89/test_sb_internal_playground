@@ -135,7 +135,8 @@ var isIE = (msIE > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./));
           
         }
         window.onload = function() {
-        $('.cover').fadeOut(2000);
+        $('.cover').fadeOut(2000,function(){$('.cover').css('background','rgba(255,255,255,0.5)')});
+
      };
     </script>
     <script src='js/svg.min.js'></script>
